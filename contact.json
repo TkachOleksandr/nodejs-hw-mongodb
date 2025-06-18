@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Іван Петренко",
+    "phoneNumber": "+380501234567",
+    "email": "ivan.petrenko@example.com",
+    "isFavourite": true,
+    "contactType": "work"
+  },
+  {
+    "name": "Олена Сидорова",
+    "phoneNumber": "+380671112233",
+    "email": "olena.sydorova@example.com",
+    "isFavourite": false,
+    "contactType": "home"
+  },
+  {
+    "name": "Максим Коваленко",
+    "phoneNumber": "+380931234567",
+    "email": "maks.kovalenko@example.com",
+    "isFavourite": false,
+    "contactType": "personal"
+  },
+  {
+    "name": "Анна Мельник",
+    "phoneNumber": "+380661234321",
+    "email": "anna.melnyk@example.com",
+    "isFavourite": true,
+    "contactType": "home"
+  },
+  {
+    "name": "Денис Бондар",
+    "phoneNumber": "+380991234567",
+    "email": "denys.bondar@example.com",
+    "isFavourite": false,
+    "contactType": "work"
+  }
+]
