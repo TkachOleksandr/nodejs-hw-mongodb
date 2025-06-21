@@ -1,14 +1,12 @@
-console.log('CWD:', process.cwd());
-console.log('Current file:', import.meta.url);
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { initMongoConnection } from './db/initMongoConnection.js';
-import { setupServer } from './server.js';
+import { initMongoDB } from './db/initMongoDB.js';
+import { startServer } from './server.js';
 
-const startApp = async () => {
-  await initMongoConnection();
-  setupServer();
+const bootstrap = async () => {
+  await initMongoDB();
+  startServer();
 };
 
-startApp();
+bootstrap();
