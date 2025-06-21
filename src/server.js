@@ -1,14 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
+import { getAllContacts } from './controllers/contactsController.js';
 
 export const setupServer = () => {
   const app = express();
 
   app.use(cors());
   app.use(pino());
-
   app.use(express.json());
+
+  // ✅ Роут тут — всередині функції
+  app.get('/contacts', getAllContacts);
 
   // Обробка неіснуючих маршрутів
   app.use('*', (req, res) => {
@@ -20,6 +23,3 @@ export const setupServer = () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
-import { getAllContacts} from './controllers/contactsController';
-
-app.get('/contacts', getAllContacts);
