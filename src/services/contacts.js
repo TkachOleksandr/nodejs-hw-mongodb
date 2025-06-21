@@ -1,4 +1,4 @@
-import Contact from '../models/contactModel.js'; // або шлях до моделі
+import Contact from '../models/contact'; // або шлях до моделі
 
 export const getAllContactsService = async () => {
   return await Contact.find();
