@@ -1,3 +1,4 @@
+console.log('Current working directory:', process.cwd());
 import dotenv from 'dotenv';
 dotenv.config();
 
