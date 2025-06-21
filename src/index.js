@@ -1,4 +1,5 @@
-console.log('Current working directory:', process.cwd());
+console.log('CWD:', process.cwd());
+console.log('Current file:', import.meta.url);
 import dotenv from 'dotenv';
 dotenv.config();
 
