@@ -20,6 +20,6 @@ export const setupServer = () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
-import { getAllContacts } from './controllers/contactsController.jscontactsController';
+import { getAllContacts } from './controllers/contactsController';
 
 app.get('/contacts', getAllContacts);
