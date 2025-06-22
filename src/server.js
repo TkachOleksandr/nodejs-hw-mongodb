@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
 import { getAllContacts } from './controllers/contactsController.js';
+import { getContactByIdController } from './controllers/contactsController.js';
 
 export const setupServer = () => {
   const app = express();
@@ -11,6 +12,7 @@ export const setupServer = () => {
   app.use(express.json());
 
   // Роут
+  app.get('/contacts/:contactId', getContactByIdController);
   app.get('/contacts', getAllContacts);
 
   // Обробка неіснуючих маршрутів
