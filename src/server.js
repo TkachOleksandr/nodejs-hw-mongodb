@@ -10,7 +10,7 @@ export const setupServer = () => {
   app.use(pino());
   app.use(express.json());
 
-  // ✅ Роут тут — всередині функції
+  // Роут
   app.get('/contacts', getAllContacts);
 
   // Обробка неіснуючих маршрутів
@@ -20,6 +20,9 @@ export const setupServer = () => {
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`✅ Server is running on port ${PORT}`);
   });
 };
+
+// 🟢 Додай цей виклик, інакше сервер не запускається
+setupServer();
