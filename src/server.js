@@ -14,7 +14,7 @@ export const setupServer = () => {
   app.get('/contacts', getAllContacts);
 
   // Обробка неіснуючих маршрутів
- app.all('*', (req, res) => {
+ app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
   });
 
