@@ -33,6 +33,9 @@ export const setupServer = async () => {
   app.get('/contacts/:contactId', getContactById);
   app.get('/contacts', getAllContacts);
 
+  app.get('/', (req, res) => {
+    res.send('Server is working');
+  }); 
   
   app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
