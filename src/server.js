@@ -11,7 +11,9 @@ console.log('Loaded env vars:', {
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
+import mongoose from 'mongoose';
 
+import { Contact } from './models/contactModel.js'; 
 import { getAllContacts, getContactById } from './controllers/contactsController.js';
 
 export const startServer = async () => {
@@ -21,17 +23,33 @@ export const startServer = async () => {
   app.use(pino());
   app.use(express.json());
 
+
+  app.get('/test-db', async (req, res) => {
+    try {
+      const contacts = await Contact.find({});
+      console.log('Contacts from DB:', contacts); // <-- логування
+      res.status(200).json({ contacts });
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
+      res.status(500).json({ message: 'Error fetching contacts' });
+    }
+  });
+
+  // 🔁 Твої основні маршрути
   app.get('/contacts/:contactId', getContactById);
   app.get('/contacts', getAllContacts);
 
+  // 📡 Перевірка статусу
   app.get('/', (req, res) => {
     res.send('Server is working');
   });
 
+  // ❌ Обробка 404
   app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
   });
 
+  // 🚀 Запуск сервера
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`✅ Server is running on port ${PORT}`);
