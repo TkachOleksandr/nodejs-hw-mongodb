@@ -2,8 +2,7 @@ import dotenv from 'dotenv';
 
 const result = dotenv.config();
 if (result.error) {
-  console.error('Failed to load .env file:', result.error);
-  process.exit(1);
+  console.warn('.env file not found, assuming environment variables are provided externally');
 }
 
 console.log('Loaded env vars:', {
