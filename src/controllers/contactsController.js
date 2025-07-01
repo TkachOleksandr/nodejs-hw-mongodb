@@ -9,8 +9,24 @@ import {
 
 export const getAllContacts = async (req, res, next) => {
   try {
-    const contacts = await getAllContactsService();
-    res.status(200).json({ status: 200, message: 'Successfully retrieved all contacts!', data: contacts });
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.perPage) || 10;
+    const sortBy = req.query.sortBy || 'name';
+    const sortOrder = req.query.sortOrder || 'asc';
+    const type = req.query.type;
+    const isFavourite = req.query.isFavourite;
+
+    const filter = {};
+    if (type) filter.contactType = type;
+    if (isFavourite !== undefined) filter.isFavourite = isFavourite === 'true';
+
+    const result = await getAllContactsService({ page, perPage, sortBy, sortOrder, filter });
+
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully found contacts!',
+      data: result,
+    });
   } catch (err) {
     next(err);
   }
