@@ -7,7 +7,6 @@ import {
 } from '../services/contacts.js';
 import createError from 'http-errors';
 
-
 export const getAllContacts = async (req, res, next) => {
   try {
     const {
@@ -29,13 +28,13 @@ export const getAllContacts = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
+      message: 'Successfully retrieved contacts!',
       data: contacts,
     });
   } catch (error) {
     next(error);
   }
 };
-
 
 export const getContactById = async (req, res, next) => {
   try {
@@ -47,13 +46,13 @@ export const getContactById = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
+      message: 'Successfully retrieved contact!',
       data: contact,
     });
   } catch (error) {
     next(error);
   }
 };
-
 
 export const createContact = async (req, res, next) => {
   try {
@@ -64,13 +63,13 @@ export const createContact = async (req, res, next) => {
 
     res.status(201).json({
       status: 201,
+      message: 'Successfully created a contact!',
       data: contact,
     });
   } catch (error) {
     next(error);
   }
 };
-
 
 export const updateContact = async (req, res, next) => {
   try {
@@ -82,13 +81,13 @@ export const updateContact = async (req, res, next) => {
 
     res.status(200).json({
       status: 200,
+      message: 'Successfully updated a contact!',
       data: updated,
     });
   } catch (error) {
     next(error);
   }
 };
-
 
 export const deleteContact = async (req, res, next) => {
   try {
@@ -98,7 +97,11 @@ export const deleteContact = async (req, res, next) => {
       throw createError(404, 'Contact not found');
     }
 
-    res.status(204).end();
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully deleted a contact!',
+      data: deleted,
+    });
   } catch (error) {
     next(error);
   }

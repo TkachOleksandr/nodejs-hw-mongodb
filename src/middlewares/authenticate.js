@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import createError from 'http-errors';
 import { User } from '../models/User.js';
+import { Session } from '../models/Session.js';
 
 const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 
@@ -22,6 +23,9 @@ export const authenticate = async (req, res, next) => {
 
     const user = await User.findById(payload.id);
     if (!user) throw createError(401, 'User not found');
+
+    const session = await Session.findOne({ userId: user._id, accessToken: token });
+    if (!session) throw createError(401, 'Invalid or expired token');
 
     req.user = user;
     next();

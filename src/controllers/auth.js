@@ -1,4 +1,4 @@
-import {
+import { 
   registerService,
   loginService,
   refreshService,
@@ -27,12 +27,19 @@ export const loginUser = async (req, res, next) => {
   try {
     const { accessToken, refreshToken, session } = await loginService(req.body);
 
-    // Записуємо refreshToken в cookie
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 днів
-    });
+    res
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'Strict',
+        secure: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      })
+      .cookie('sessionId', session._id.toString(), {
+        httpOnly: true,
+        sameSite: 'Strict',
+        secure: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
 
     res.status(200).json({
       status: 200,
@@ -46,13 +53,23 @@ export const loginUser = async (req, res, next) => {
 
 export const refreshSession = async (req, res, next) => {
   try {
-    const { accessToken, refreshToken } = await refreshService(req.cookies.refreshToken);
+    const { accessToken, refreshToken, session } = await refreshService(
+      req.cookies.refreshToken
+    );
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
+    res
+      .cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        sameSite: 'Strict',
+        secure: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      })
+      .cookie('sessionId', session._id.toString(), {
+        httpOnly: true,
+        sameSite: 'Strict',
+        secure: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
 
     res.status(200).json({
       status: 200,
@@ -66,8 +83,10 @@ export const refreshSession = async (req, res, next) => {
 
 export const logoutUser = async (req, res, next) => {
   try {
-    await logoutService(req.cookies.refreshToken);
+    const { refreshToken, sessionId } = req.cookies;
+    await logoutService(refreshToken, sessionId);
     res.clearCookie('refreshToken');
+    res.clearCookie('sessionId');
     res.status(204).end();
   } catch (error) {
     next(error);
