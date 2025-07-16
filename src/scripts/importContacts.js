@@ -18,7 +18,7 @@ const filePath = path.join(__dirname, '../data/contacts.json');
     console.log('✅ MongoDB connected');
 
     const data = JSON.parse(await fs.readFile(filePath, 'utf-8'));
-    await Contact.deleteMany(); // Очистити колекцію перед імпортом
+    await Contact.deleteMany(); 
     await Contact.insertMany(data);
     console.log('✅ Contacts successfully imported');
 

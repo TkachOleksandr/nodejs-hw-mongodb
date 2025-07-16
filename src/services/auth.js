@@ -10,9 +10,9 @@ const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const JWT_SECRET = process.env.JWT_SECRET;
 const APP_DOMAIN = process.env.APP_DOMAIN;
 
-const ACCESS_EXPIRES = 15 * 60; // 15 хв
-const REFRESH_EXPIRES = 30 * 24 * 60 * 60; // 30 днів
-const RESET_EXPIRES = 5 * 60; // 5 хвилин
+const ACCESS_EXPIRES = 15 * 60;
+const REFRESH_EXPIRES = 30 * 24 * 60 * 60; 
+const RESET_EXPIRES = 5 * 60; 
 
 const generateToken = (payload, secret, expiresIn) =>
   jwt.sign(payload, secret, { expiresIn });

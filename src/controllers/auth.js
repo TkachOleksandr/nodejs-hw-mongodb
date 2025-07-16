@@ -30,11 +30,11 @@ export const loginUser = async (req, res, next) => {
   try {
     const { accessToken, refreshToken, session } = await loginService(req.body);
 
-    // Записуємо refreshToken в cookie
+   
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 днів
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -77,7 +77,7 @@ export const logoutUser = async (req, res, next) => {
   }
 };
 
-// Надсилання листа для скидання паролю
+
 export const sendResetEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
