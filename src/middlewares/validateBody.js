@@ -1,11 +1,11 @@
-import createError from 'http-errors';
+import createHttpError from 'http-errors';
 
-export const validateBody = (schema) => {
-  return (req, res, next) => {
-    const { error } = schema.validate(req.body);
-    if (error) {
-      return next(createError(400, error.message));
-    }
+export const validateBody = (schema) => async (req, res, next) => {
+  try {
+    await schema.validate(req.body, { abortEarly: false });
     next();
-  };
+  } catch (err) {
+    const message = err.errors ? err.errors.join(', ') : 'Invalid request';
+    next(createHttpError(400, message));
+  }
 };
