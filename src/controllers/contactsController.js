@@ -5,7 +5,9 @@ import {
   updateContactService,
   deleteContactService,
 } from '../services/contacts.js';
+
 import createError from 'http-errors';
+import { uploadImageToCloudinary } from '../utils/cloudinary.js';
 
 export const getAllContacts = async (req, res, next) => {
   try {
@@ -101,6 +103,34 @@ export const deleteContact = async (req, res, next) => {
       status: 200,
       message: 'Successfully deleted a contact!',
       data: deleted,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const uploadContactPhoto = async (req, res, next) => {
+  try {
+    const { file, user, params } = req;
+
+    if (!file) {
+      throw createError(400, 'Photo is required');
+    }
+
+    const result = await uploadImageToCloudinary(file.path);
+
+    const updated = await updateContactService(user._id, params.contactId, {
+      photo: result.secure_url,
+    });
+
+    if (!updated) {
+      throw createError(404, 'Contact not found');
+    }
+
+    res.status(200).json({
+      status: 200,
+      message: 'Photo updated successfully!',
+      data: updated,
     });
   } catch (error) {
     next(error);

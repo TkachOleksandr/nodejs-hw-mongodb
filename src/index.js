@@ -1,13 +1,29 @@
 import dotenv from 'dotenv';
 dotenv.config();
-console.log("JWT_ACCESS_SECRET:", process.env.JWT_ACCESS_SECRET);
 
+import express from 'express';
+import contactRoutes from './routers/contacts.js';
 import { initMongoDB } from './db/initMongoConnection.js';
-import { startServer } from './server.js';
+import { startServer } from './server.js'; 
+
+const app = express();
+
+
+app.use(express.json());
+
+app.use('/contacts', contactRoutes);
 
 const bootstrap = async () => {
-  await initMongoDB();
-  await startServer();
+  try {
+    await initMongoDB();
+
+    await startServer(app);
+
+    console.log('Server started successfully');
+  } catch (error) {
+    console.error('Error during server start:', error);
+    process.exit(1);
+  }
 };
 
 bootstrap();
