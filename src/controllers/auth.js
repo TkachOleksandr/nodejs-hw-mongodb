@@ -108,7 +108,6 @@ export const sendResetEmail = async (req, res, next) => {
   }
 };
 
-// Скидання паролю за токеном
 export const resetPassword = async (req, res, next) => {
   try {
     const { token, password } = req.body;
@@ -127,7 +126,6 @@ export const resetPassword = async (req, res, next) => {
     user.password = hashed;
     await user.save();
 
-    // Видаляємо поточну сесію користувача
     await Session.deleteMany({ userId: user._id });
 
     res.status(200).json({
