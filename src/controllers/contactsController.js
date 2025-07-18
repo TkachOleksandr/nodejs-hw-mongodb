@@ -58,9 +58,16 @@ export const getContactById = async (req, res, next) => {
 
 export const createContact = async (req, res, next) => {
   try {
+    let photoUrl;
+
+    if (req.file?.buffer) {
+      photoUrl = await uploadImageToCloudinary(req.file.buffer);
+    }
+
     const contact = await createContactService({
       ...req.body,
       userId: req.user._id,
+      ...(photoUrl && { photo: photoUrl }),
     });
 
     res.status(201).json({
@@ -75,7 +82,13 @@ export const createContact = async (req, res, next) => {
 
 export const updateContact = async (req, res, next) => {
   try {
-    const updated = await updateContactService(req.user._id, req.params.contactId, req.body);
+    const updatedData = { ...req.body };
+
+    if (req.file?.buffer) {
+      updatedData.photo = await uploadImageToCloudinary(req.file.buffer);
+    }
+
+    const updated = await updateContactService(req.user._id, req.params.contactId, updatedData);
 
     if (!updated) {
       throw createError(404, 'Contact not found');
@@ -111,16 +124,14 @@ export const deleteContact = async (req, res, next) => {
 
 export const uploadContactPhoto = async (req, res, next) => {
   try {
-    const { file, user, params } = req;
-
-    if (!file) {
+    if (!req.file?.buffer) {
       throw createError(400, 'Photo is required');
     }
 
-    const result = await uploadImageToCloudinary(file.path);
+    const photoUrl = await uploadImageToCloudinary(req.file.buffer);
 
-    const updated = await updateContactService(user._id, params.contactId, {
-      photo: result.secure_url,
+    const updated = await updateContactService(req.user._id, req.params.contactId, {
+      photo: photoUrl,
     });
 
     if (!updated) {

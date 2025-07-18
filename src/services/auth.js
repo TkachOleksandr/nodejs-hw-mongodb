@@ -35,8 +35,6 @@ export const loginService = async ({ email, password }) => {
     throw createHttpError(401, 'Invalid email or password');
   }
 
-  await Session.deleteMany({ userId: user._id });
-
   const accessToken = generateToken({ id: user._id }, ACCESS_SECRET, ACCESS_EXPIRES);
   const refreshToken = generateToken({ id: user._id }, REFRESH_SECRET, REFRESH_EXPIRES);
 
@@ -93,9 +91,6 @@ export const logoutService = async (refreshToken) => {
 export const sendResetEmailService = async (email) => {
   const JWT_SECRET = process.env.JWT_SECRET;
   const APP_DOMAIN = process.env.APP_DOMAIN;
-
-  console.log('sendResetEmailService JWT_SECRET:', JWT_SECRET);
-  console.log('sendResetEmailService APP_DOMAIN:', APP_DOMAIN);
 
   if (!JWT_SECRET) {
     throw new Error('JWT_SECRET is not defined');

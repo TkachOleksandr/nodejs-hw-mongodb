@@ -1,5 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
+console.log('Cloudinary config vars:', {
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 import { v2 as cloudinary } from 'cloudinary';
-import { promises as fs } from 'fs';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,13 +13,18 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Функція для завантаження зображення в Cloudinary і видалення тимчасового файлу
-export const uploadImageToCloudinary = async (filePath) => {
-  const result = await cloudinary.uploader.upload(filePath, {
-    folder: 'contacts', // необов’язково, але організовує файли у папці
-    transformation: [{ width: 500, crop: 'limit' }], // опціонально
+export const uploadImageToCloudinary = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'contacts',
+        transformation: [{ width: 500, crop: 'limit' }],
+      },
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result.secure_url);
+      }
+    );
+    stream.end(buffer);
   });
-
-  await fs.unlink(filePath); // очищення тимчасового файлу після завантаження
-  return result.secure_url; // URL до зображення
 };
