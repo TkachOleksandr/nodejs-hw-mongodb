@@ -5,12 +5,22 @@ import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
 import cookieParser from 'cookie-parser';
-
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { authenticate } from './middlewares/authenticate.js';
 import contactsRouter from './routers/contacts.js';
-import authRouter from './routers/auth.js'; // ✅ ІМПОРТ
+import authRouter from './routers/auth.js';
 
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const swaggerPath = path.resolve(__dirname, '../docs/swagger.json');
+const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf-8'));
 
 export const startServer = async () => {
   const app = express();
@@ -20,14 +30,29 @@ export const startServer = async () => {
   app.use(pino());
   app.use(express.json());
 
-  app.use('/auth', authRouter); 
-
-  app.use('/contacts', contactsRouter);
-
-  app.get('/', (req, res) => {
-    res.send('Server is working');
+  // Логування запитів
+  app.use((req, res, next) => {
+    console.log(`Request: ${req.method} ${req.url}`);
+    next();
   });
 
+  // Swagger UI
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+  app.use('/contacts', authenticate, contactsRouter);
+  
+  // Тестовий роут
+  app.get('/test-docs', (req, res) => {
+    res.json({ message: 'Test route works!' });
+  });
+
+  // Роути авторизації
+  app.use('/auth', authRouter);
+
+  // Роути контактів (додай middleware authenticate, якщо потрібен)
+  app.use('/contacts', contactsRouter);
+
+  // Обробники 404 і помилок
   app.use(notFoundHandler);
   app.use(errorHandler);
 
