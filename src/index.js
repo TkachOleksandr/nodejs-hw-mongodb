@@ -1,9 +1,12 @@
 import dotenv from 'dotenv';
 dotenv.config();
+
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './docs/swagger.json' assert { type: 'json' };
+import fs from 'fs';
+import path from 'path';
+
 import contactRoutes from './routers/contacts.js';
 import authRoutes from './routers/auth.js';
 import { initMongoDB } from './db/initMongoConnection.js';
@@ -14,7 +17,13 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+
+const swaggerDocument = JSON.parse(
+  fs.readFileSync(path.resolve('./docs/swagger.json'), 'utf-8')
+);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use('/auth', authRoutes);
 
 app.use('/contacts', authenticate, contactRoutes);
