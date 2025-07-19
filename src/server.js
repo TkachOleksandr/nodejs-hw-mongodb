@@ -30,29 +30,24 @@ export const startServer = async () => {
   app.use(pino());
   app.use(express.json());
 
-  // Логування запитів
+
   app.use((req, res, next) => {
     console.log(`Request: ${req.method} ${req.url}`);
     next();
   });
 
-  // Swagger UI
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.use('/contacts', authenticate, contactsRouter);
-  
-  // Тестовий роут
+
   app.get('/test-docs', (req, res) => {
     res.json({ message: 'Test route works!' });
   });
 
-  // Роути авторизації
   app.use('/auth', authRouter);
 
-  // Роути контактів (додай middleware authenticate, якщо потрібен)
   app.use('/contacts', contactsRouter);
 
-  // Обробники 404 і помилок
   app.use(notFoundHandler);
   app.use(errorHandler);
 
