@@ -1,0 +1,13 @@
+post:
+  tags:
+    - Auth
+  summary: Вихід користувача
+  operationId: logoutUser
+  description: Видаляє сесію користувача
+  security:
+    - bearerAuth: []
+  responses:
+    '204':
+      description: Сесію завершено
+    '401':
+      description: Неавторизований доступ

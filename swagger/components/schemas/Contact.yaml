@@ -1,0 +1,24 @@
+Contact:
+  type: object
+  properties:
+    _id:
+      type: string
+      description: Унікальний ідентифікатор контакту
+    name:
+      type: string
+    email:
+      type: string
+    phone:
+      type: string
+    favorite:
+      type: boolean
+    owner:
+      type: string
+      description: ID користувача, якому належить контакт
+    imageURL:
+      type: string
+      format: uri
+  required:
+    - name
+    - email
+    - phone

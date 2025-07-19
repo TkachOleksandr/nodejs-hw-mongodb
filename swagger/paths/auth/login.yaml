@@ -1,0 +1,23 @@
+post:
+  tags:
+    - Auth
+  summary: Вхід користувача
+  operationId: loginUser
+  description: Аутентифікує користувача та видає токени
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [email, password]
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+  responses:
+    '200':
+      description: Успішний вхід
+    '401':
+      description: Неправильні облікові дані

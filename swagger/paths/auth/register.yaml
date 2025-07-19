@@ -1,0 +1,23 @@
+post:
+  tags:
+    - Auth
+  summary: Реєстрація користувача
+  operationId: registerUser
+  description: Реєструє нового користувача та створює сесію
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [email, password]
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+  responses:
+    '201':
+      description: Користувача зареєстровано
+    '400':
+      description: Некоректні дані

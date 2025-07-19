@@ -1,0 +1,13 @@
+get:
+  tags:
+    - Auth
+  summary: Оновити токени
+  operationId: refreshTokens
+  description: Оновлює пару access/refresh токенів
+  security:
+    - bearerAuth: []
+  responses:
+    '200':
+      description: Токени оновлено
+    '401':
+      description: Невірний або прострочений refresh токен
