@@ -36,20 +36,19 @@ export const startServer = async () => {
     next();
   });
 
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  app.use('/contacts', authenticate, contactsRouter);
+// Всі роутери, які потребують авторизації, із middleware authenticate
+app.use('/contacts', authenticate, contactsRouter);
 
-  app.get('/test-docs', (req, res) => {
-    res.json({ message: 'Test route works!' });
-  });
+// Маршрути auth без авторизації
+app.use('/auth', authRouter);
 
-  app.use('/auth', authRouter);
+// Обробка 404
+app.use(notFoundHandler);
 
-  app.use('/contacts', contactsRouter);
-
-  app.use(notFoundHandler);
-  app.use(errorHandler);
+// Обробка помилок
+app.use(errorHandler);
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {

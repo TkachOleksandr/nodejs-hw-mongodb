@@ -1,4 +1,4 @@
-import {
+mport {
   getAllContactsService,
   getContactByIdService,
   createContactService,
@@ -29,9 +29,18 @@ export const getAllContacts = async (req, res, next) => {
     });
 
     res.status(200).json({
-      status: 200,
-      message: 'Successfully retrieved contacts!',
-      data: contacts,
+      status: 'success',              // рядок, а не число
+      code: 200,
+      message: 'Контакти отримано',
+      data: {
+        contacts: contacts.data,
+        total: contacts.totalItems,
+        page: contacts.page,
+        limit: contacts.perPage,
+        totalPages: contacts.totalPages,
+        hasPreviousPage: contacts.hasPreviousPage,
+        hasNextPage: contacts.hasNextPage,
+      },
     });
   } catch (error) {
     next(error);
@@ -43,12 +52,13 @@ export const getContactById = async (req, res, next) => {
     const contact = await getContactByIdService(req.user._id, req.params.contactId);
 
     if (!contact) {
-      throw createError(404, 'Contact not found');
+      throw createError(404, 'Контакт не знайдено');
     }
 
     res.status(200).json({
-      status: 200,
-      message: 'Successfully retrieved contact!',
+      status: 'success',
+      code: 200,
+      message: 'Контакт отримано',
       data: contact,
     });
   } catch (error) {
@@ -71,8 +81,9 @@ export const createContact = async (req, res, next) => {
     });
 
     res.status(201).json({
-      status: 201,
-      message: 'Successfully created a contact!',
+      status: 'success',
+      code: 201,
+      message: 'Контакт створено',
       data: contact,
     });
   } catch (error) {
@@ -91,12 +102,13 @@ export const updateContact = async (req, res, next) => {
     const updated = await updateContactService(req.user._id, req.params.contactId, updatedData);
 
     if (!updated) {
-      throw createError(404, 'Contact not found');
+      throw createError(404, 'Контакт не знайдено');
     }
 
     res.status(200).json({
-      status: 200,
-      message: 'Successfully updated a contact!',
+      status: 'success',
+      code: 200,
+      message: 'Контакт оновлено',
       data: updated,
     });
   } catch (error) {
@@ -109,14 +121,19 @@ export const deleteContact = async (req, res, next) => {
     const deleted = await deleteContactService(req.user._id, req.params.contactId);
 
     if (!deleted) {
-      throw createError(404, 'Contact not found');
+      throw createError(404, 'Контакт не знайдено');
     }
 
+    // Якщо хочеш повертати тіло (не 204), то так:
     res.status(200).json({
-      status: 200,
-      message: 'Successfully deleted a contact!',
+      status: 'success',
+      code: 200,
+      message: 'Контакт видалено',
       data: deleted,
     });
+
+    // Або можна без тіла та статус 204:
+    // res.status(204).json();
   } catch (error) {
     next(error);
   }
@@ -125,7 +142,7 @@ export const deleteContact = async (req, res, next) => {
 export const uploadContactPhoto = async (req, res, next) => {
   try {
     if (!req.file?.buffer) {
-      throw createError(400, 'Photo is required');
+      throw createError(400, 'Фото обов’язкове');
     }
 
     const photoUrl = await uploadImageToCloudinary(req.file.buffer);
@@ -135,12 +152,13 @@ export const uploadContactPhoto = async (req, res, next) => {
     });
 
     if (!updated) {
-      throw createError(404, 'Contact not found');
+      throw createError(404, 'Контакт не знайдено');
     }
 
     res.status(200).json({
-      status: 200,
-      message: 'Photo updated successfully!',
+      status: 'success',
+      code: 200,
+      message: 'Фото оновлено',
       data: updated,
     });
   } catch (error) {

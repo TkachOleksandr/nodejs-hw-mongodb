@@ -1,11 +1,12 @@
 const errorHandler = (err, req, res, next) => {
-  const status = err.status || 500; 
-  const message = err.message || 'Something went wrong';
+  const statusCode = err.status || 500;
+  const statusText = statusCode >= 500 ? 'error' : 'fail';
 
-  res.status(status).json({
-    status,
-    message,
-    data: message,
+  res.status(statusCode).json({
+    status: statusText,    // рядок "error" або "fail"
+    code: statusCode,      // числовий HTTP код
+    message: err.message || 'Something went wrong',
+    data: {},              // пустий об'єкт у відповіді
   });
 };
 
