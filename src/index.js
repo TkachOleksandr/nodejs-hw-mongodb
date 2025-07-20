@@ -1,24 +1,15 @@
-import express from 'express';
-import contactsRouter from './routers/contacts.js';
-import authRouter from './routers/auth.js';
-import errorHandler from './middlewares/errorHandler.js'; // або як він у тебе називається
+import { initMongoDB } from './db/initMongoConnection.js';
+import { startServer } from './server.js';
 
-const app = express();
+const bootstrap = async () => {
+  try {
+    await initMongoDB();
+    await startServer();
+    console.log('✅ Server started successfully');
+  } catch (error) {
+    console.error('❌ Error during server start:', error);
+    process.exit(1);
+  }
+};
 
-// Підключення middleware для парсингу JSON, кукі, cors, логування тощо
-app.use(express.json());
-// інші middlewares ...
-
-// Підключення роутів
-app.use('/contacts', contactsRouter);
-app.use('/auth', authRouter);
-
-// Помилка 404
-app.use((req, res, next) => {
-  res.status(404).json({ status: 'fail', code: 404, message: 'Not found', data: {} });
-});
-
-// Підключення errorHandler — ОСТАННІМ middleware
-app.use(errorHandler);
-
-export default app;
+bootstrap();
