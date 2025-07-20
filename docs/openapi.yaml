@@ -17,36 +17,36 @@ servers:
 paths:
   /contacts:
     get:
-      $ref: ./paths/contacts/get.yaml
+      $ref: ../swagger/paths/contacts/get.yaml
     post:
-      $ref: ./paths/contacts/post.yaml
+      $ref: ../swagger/paths/contacts/post.yaml
   /contacts/{contactId}:
     get:
-      $ref: ./paths/contacts/{contactId}/get.yaml
+      $ref: ../swagger/paths/contacts/{contactId}/get.yaml
     put:
-      $ref: ./paths/contacts/{contactId}/put.yaml
+      $ref: ../swagger/paths/contacts/{contactId}/put.yaml
     patch:
-      $ref: ./paths/contacts/{contactId}/patch.yaml
+      $ref: ../swagger/paths/contacts/{contactId}/patch.yaml
     delete:
-      $ref: ./paths/contacts/{contactId}/delete.yaml
+      $ref: ../swagger/paths/contacts/{contactId}/delete.yaml
   /auth/register:
     post:
-      $ref: ./paths/auth/register.yaml
+      $ref: ../swagger/paths/auth/register.yaml
   /auth/login:
     post:
-      $ref: ./paths/auth/login.yaml
+      $ref: ../swagger/paths/auth/login.yaml
   /auth/refresh:
     post:
-      $ref: ./paths/auth/refresh.yaml
+      $ref: ../swagger/paths/auth/refresh.yaml
   /auth/logout:
     post:
-      $ref: ./paths/auth/logout.yaml
+      $ref: ../swagger/paths/auth/logout.yaml
   /auth/send-reset-email:
     post:
-      $ref: ./paths/auth/send-reset-email.yaml
+      $ref: ../swagger/paths/auth/send-reset-email.yaml
   /auth/reset-pwd:
     post:
-      $ref: ./paths/auth/reset-pwd.yaml
+      $ref: ../swagger/paths/auth/reset-pwd.yaml
 
 components:
   securitySchemes:
