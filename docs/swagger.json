@@ -79,6 +79,11 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "status": "error",
+                  "message": "Email already in use",
+                  "data": null
                 }
               }
             }
@@ -144,26 +149,30 @@
                 "schema": {
                   "$ref": "#/components/schemas/ContactListResponse"
                 },
-                "example": {
-                  "status": "success",
-                  "message": "Contacts found",
-                  "data": {
-                    "contacts": [
-                      {
-                        "_id": "507f1f77bcf86cd799439011",
-                        "name": "John Doe",
-                        "email": "john@example.com",
-                        "phone": "+1234567890",
-                        "favorite": false,
-                        "owner": {
-                          "_id": "507f191e810c19729de860ea",
-                          "email": "user@example.com"
-                        }
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": "success",
+                      "message": "Contacts found",
+                      "data": {
+                        "contacts": [
+                          {
+                            "_id": "507f1f77bcf86cd799439011",
+                            "name": "John Doe",
+                            "email": "john@example.com",
+                            "phone": "+1234567890",
+                            "favorite": false,
+                            "owner": {
+                              "_id": "507f191e810c19729de860ea",
+                              "email": "user@example.com"
+                            }
+                          }
+                        ],
+                        "total": 1,
+                        "page": 1,
+                        "limit": 20
                       }
-                    ],
-                    "total": 1,
-                    "page": 1,
-                    "limit": 20
+                    }
                   }
                 }
               }
@@ -173,7 +182,11 @@
             "$ref": "#/components/responses/Unauthorized"
           }
         },
-        "security": [{"bearerAuth": []}]
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "post": {
         "tags": ["Contacts"],
@@ -206,7 +219,7 @@
                   "avatar": {
                     "type": "string",
                     "format": "binary",
-                    "description": "Contact avatar image"
+                    "description": "Contact avatar image (JPEG/PNG, max 1MB)"
                   }
                 },
                 "required": ["name", "email", "phone"]
@@ -221,6 +234,22 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ContactResponse"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": "success",
+                      "message": "Contact created successfully",
+                      "data": {
+                        "_id": "507f1f77bcf86cd799439012",
+                        "name": "John Doe",
+                        "email": "john@example.com",
+                        "phone": "+1234567890",
+                        "favorite": false,
+                        "avatarURL": "https://example.com/avatars/1.jpg"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -232,7 +261,11 @@
             "$ref": "#/components/responses/Unauthorized"
           }
         },
-        "security": [{"bearerAuth": []}]
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/contacts/{contactId}": {
@@ -251,6 +284,22 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ContactResponse"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": "success",
+                      "message": "Contact found",
+                      "data": {
+                        "_id": "507f1f77bcf86cd799439011",
+                        "name": "John Doe",
+                        "email": "john@example.com",
+                        "phone": "+1234567890",
+                        "favorite": false,
+                        "avatarURL": "https://example.com/avatars/1.jpg"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -262,7 +311,11 @@
             "$ref": "#/components/responses/NotFound"
           }
         },
-        "security": [{"bearerAuth": []}]
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "patch": {
         "tags": ["Contacts"],
@@ -296,7 +349,8 @@
                   },
                   "avatar": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "Contact avatar image (JPEG/PNG, max 1MB)"
                   }
                 }
               }
@@ -310,6 +364,22 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ContactResponse"
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": "success",
+                      "message": "Contact updated successfully",
+                      "data": {
+                        "_id": "507f1f77bcf86cd799439011",
+                        "name": "Updated Name",
+                        "email": "updated@example.com",
+                        "phone": "+1234567890",
+                        "favorite": true,
+                        "avatarURL": "https://example.com/avatars/1-updated.jpg"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -324,7 +394,11 @@
             "$ref": "#/components/responses/NotFound"
           }
         },
-        "security": [{"bearerAuth": []}]
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": ["Contacts"],
@@ -342,9 +416,13 @@
                 "schema": {
                   "$ref": "#/components/schemas/SuccessResponse"
                 },
-                "example": {
-                  "status": "success",
-                  "message": "Contact deleted"
+                "examples": {
+                  "success": {
+                    "value": {
+                      "status": "success",
+                      "message": "Contact deleted"
+                    }
+                  }
                 }
               }
             }
@@ -356,7 +434,11 @@
             "$ref": "#/components/responses/NotFound"
           }
         },
-        "security": [{"bearerAuth": []}]
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },
@@ -534,6 +616,7 @@
           },
           "data": {
             "type": "object",
+            "nullable": true,
             "example": null
           }
         }
@@ -621,6 +704,21 @@
             "example": {
               "status": "error",
               "message": "Contact not found",
+              "data": null
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Conflict - resource already exists",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "status": "error",
+              "message": "Email already in use",
               "data": null
             }
           }
