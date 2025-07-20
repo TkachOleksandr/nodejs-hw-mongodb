@@ -30,6 +30,9 @@ patch:
             image:
               type: string
               format: binary
+        encoding:
+          image:
+            contentType: image/jpeg, image/png
   responses:
     '200':
       description: Контакт оновлено
@@ -59,46 +62,10 @@ patch:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: error
-              code:
-                type: integer
-                example: 400
-              message:
-                type: string
-                example: Невірний запит
-              data:
-                type: string
-                example: ''
-            required:
-              - status
-              - code
-              - message
-              - data
+            $ref: ../../components/schemas/Error.yaml#/Error
     '404':
       description: Контакт не знайдено
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: error
-              code:
-                type: integer
-                example: 404
-              message:
-                type: string
-                example: Контакт не знайдено
-              data:
-                type: string
-                example: ''
-            required:
-              - status
-              - code
-              - message
-              - data
+            $ref: ../../components/schemas/Error.yaml#/Error

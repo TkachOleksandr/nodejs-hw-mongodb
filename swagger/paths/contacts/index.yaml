@@ -68,6 +68,11 @@ get:
                   limit:
                     type: integer
                     description: Ліміт контактів на сторінку
+                required:
+                  - contacts
+                  - total
+                  - page
+                  - limit
             required:
               - status
               - code
@@ -110,6 +115,9 @@ post:
             image:
               type: string
               format: binary
+        encoding:
+          image:
+            contentType: image/jpeg, image/png
   responses:
     '201':
       description: Контакт створено
