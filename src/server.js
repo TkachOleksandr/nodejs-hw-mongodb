@@ -12,46 +12,83 @@ import { fileURLToPath } from 'url';
 import { authenticate } from './middlewares/authenticate.js';
 import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
-
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const swaggerPath = path.resolve(__dirname, '../docs/swagger.json');
-const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf-8'));
-
 export const startServer = async () => {
   const app = express();
 
+  // Завантаження Swagger документації
+  const swaggerPath = path.resolve(__dirname, '../docs/swagger.json');
+  console.log('Swagger file path:', swaggerPath);
+  
+  if (!fs.existsSync(swaggerPath)) {
+    throw new Error('Swagger file not found at: ' + swaggerPath);
+  }
+
+  const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf-8'));
+
+  // Middlewares
   app.use(cookieParser());
   app.use(cors());
   app.use(pino());
   app.use(express.json());
 
-
+  // Логування запитів
   app.use((req, res, next) => {
     console.log(`Request: ${req.method} ${req.url}`);
     next();
   });
 
- app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  // Спеціальні налаштування для Swagger UI
+  const swaggerOptions = {
+    explorer: true,
+    swaggerOptions: {
+      validatorUrl: null,
+      docExpansion: 'list',
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      // Додаємо параметр для коректного відображення path parameters
+      plugins: [
+        () => ({
+          statePlugins: {
+            spec: {
+              wrapSelectors: {
+                allowTryItOutFor: () => () => true
+              }
+            }
+          }
+        })
+      ]
+    }
+  };
 
-// Всі роутери, які потребують авторизації, із middleware authenticate
-app.use('/contacts', authenticate, contactsRouter);
+  // Додаємо endpoint для raw swagger.json
+  app.get('/api-docs/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerDocument);
+  });
 
-// Маршрути auth без авторизації
-app.use('/auth', authRouter);
+  // Підключення Swagger UI з урахуванням усіх налаштувань
+  app.use('/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument, swaggerOptions)
+  );
 
-// Обробка 404
-app.use(notFoundHandler);
+  // Маршрути
+  app.use('/contacts', authenticate, contactsRouter);
+  app.use('/auth', authRouter);
 
-// Обробка помилок
-app.use(errorHandler);
+  // Обробка помилок
+  app.use(notFoundHandler);
+  app.use(errorHandler);
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`✅ Server is running on port ${PORT}`);
+    console.log(`📚 API docs available at http://localhost:${PORT}/api-docs`);
   });
 };
