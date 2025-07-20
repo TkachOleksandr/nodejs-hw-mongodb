@@ -1,6 +1,6 @@
 import express from 'express';
 import contactsRouter from './routers/contacts.js';
-import authRouter from './routes/auth.js';
+import authRouter from './routers/auth.js';
 import errorHandler from './middlewares/errorHandler.js'; // або як він у тебе називається
 
 const app = express();
