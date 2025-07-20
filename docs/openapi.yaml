@@ -181,17 +181,18 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /contacts/{contactId}:
+    parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
+
     get:
       summary: Отримати контакт за ID
       tags:
         - Contacts
       operationId: getContactById
-      parameters:
-        - name: contactId
-          in: path
-          required: true
-          schema:
-            type: string
       security:
         - bearerAuth: []
       responses:
@@ -230,12 +231,6 @@ paths:
       tags:
         - Contacts
       operationId: updateContactById
-      parameters:
-        - name: contactId
-          in: path
-          required: true
-          schema:
-            type: string
       security:
         - bearerAuth: []
       requestBody:
@@ -295,12 +290,6 @@ paths:
       tags:
         - Contacts
       operationId: deleteContactById
-      parameters:
-        - name: contactId
-          in: path
-          required: true
-          schema:
-            type: string
       security:
         - bearerAuth: []
       responses:
