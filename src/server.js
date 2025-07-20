@@ -22,20 +22,27 @@ const __dirname = path.dirname(__filename);
 export const startServer = async () => {
   const app = express();
 
-  // Multer налаштування
+  // Multer налаштування для multipart/form-data
   const upload = multer({
+    storage: multer.memoryStorage(),
     limits: {
-      fileSize: 1000000, // 1MB
+      fileSize: 1024 * 1024, // 1MB
       fields: 10
+    },
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only image files are allowed!'), false);
+      }
     }
   });
 
-  // Middlewares (важливий порядок!)
-  app.use(upload.none()); // Спочатку обробка form-data
-  app.use(express.json());
-  app.use(cookieParser());
+  // Middlewares
   app.use(cors());
   app.use(pino());
+  app.use(express.json());
+  app.use(cookieParser());
 
   // Swagger документація
   const swaggerPath = path.resolve(__dirname, '../docs/swagger.json');
@@ -46,8 +53,8 @@ export const startServer = async () => {
     swaggerOptions: {
       persistAuthorization: true,
       displayRequestDuration: true,
-      defaultModelExpandDepth: 2,
-      tryItOutEnabled: true // Дозволити "Try it out" для всіх методів
+      defaultModelExpandDepth: 3,
+      tryItOutEnabled: true
     }
   };
 
@@ -66,6 +73,12 @@ export const startServer = async () => {
       return res.status(400).json({
         status: 'error',
         message: 'File upload error: ' + err.message,
+        data: null
+      });
+    } else if (err) {
+      return res.status(400).json({
+        status: 'error',
+        message: err.message,
         data: null
       });
     }
