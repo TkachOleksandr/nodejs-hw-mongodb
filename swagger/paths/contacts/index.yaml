@@ -37,9 +37,48 @@ get:
         enum: [asc, desc]
   responses:
     '200':
-      description: Список контактів
+      description: Список контактів з пагінацією
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: Контакти отримано
+              data:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      $ref: ../../components/schemas/Contact.yaml#/Contact
+                  total:
+                    type: integer
+                    description: Загальна кількість контактів
+                  page:
+                    type: integer
+                    description: Номер поточної сторінки
+                  limit:
+                    type: integer
+                    description: Ліміт контактів на сторінку
+            required:
+              - status
+              - code
+              - message
+              - data
     '401':
       description: Неавторизований доступ
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Error.yaml#/Error
 
 post:
   tags:
@@ -52,10 +91,13 @@ post:
   requestBody:
     required: true
     content:
-      application/json:
+      multipart/form-data:
         schema:
           type: object
-          required: [name, email, phone]
+          required:
+            - name
+            - email
+            - phone
           properties:
             name:
               type: string
@@ -65,10 +107,42 @@ post:
               type: string
             favorite:
               type: boolean
+            image:
+              type: string
+              format: binary
   responses:
     '201':
       description: Контакт створено
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              code:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Контакт створено
+              data:
+                $ref: ../../components/schemas/Contact.yaml#/Contact
+            required:
+              - status
+              - code
+              - message
+              - data
     '400':
       description: Помилка валідації
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Error.yaml#/Error
     '401':
       description: Неавторизований доступ
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/Error.yaml#/Error

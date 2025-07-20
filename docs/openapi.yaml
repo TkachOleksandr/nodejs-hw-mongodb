@@ -21,12 +21,18 @@ paths:
   /contacts:
     $ref: ../swagger/paths/contacts/index.yaml
   /contacts/{contactId}:
+    parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
     get:
-      $ref: ../swagger/paths/contacts/{id}/get.yaml
+      $ref: ../swagger/paths/contacts/{contactId}/get.yaml
     patch:
-      $ref: ../swagger/paths/contacts/{id}/patch.yaml
+      $ref: ../swagger/paths/contacts/{contactId}/patch.yaml
     delete:
-      $ref: ../swagger/paths/contacts/{id}/delete.yaml
+      $ref: ../swagger/paths/contacts/{contactId}/delete.yaml
   /auth/register:
     $ref: ../swagger/paths/auth/register.yaml
   /auth/login:
@@ -50,3 +56,5 @@ components:
       $ref: ../swagger/components/schemas/Contact.yaml#/Contact
     User:
       $ref: ../swagger/components/schemas/User.yaml#/User
+    Error:
+      $ref: ../swagger/components/schemas/Error.yaml#/Error

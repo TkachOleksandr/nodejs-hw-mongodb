@@ -1,0 +1,104 @@
+patch:
+  tags:
+    - Contacts
+  summary: Оновити контакт
+  operationId: updateContact
+  description: Оновлює дані конкретного контакту за ID
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: contactId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            favorite:
+              type: boolean
+            image:
+              type: string
+              format: binary
+  responses:
+    '200':
+      description: Контакт оновлено
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: Контакт оновлено
+              data:
+                $ref: ../../components/schemas/Contact.yaml#/Contact
+            required:
+              - status
+              - code
+              - message
+              - data
+    '400':
+      description: Невірний запит
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: error
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: Невірний запит
+              data:
+                type: string
+                example: ""
+            required:
+              - status
+              - code
+              - message
+              - data
+    '404':
+      description: Контакт не знайдено
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: error
+              code:
+                type: integer
+                example: 404
+              message:
+                type: string
+                example: Контакт не знайдено
+              data:
+                type: string
+                example: ""
+            required:
+              - status
+              - code
+              - message
+              - data
