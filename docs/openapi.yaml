@@ -21,12 +21,6 @@ paths:
   /contacts:
     $ref: ../swagger/paths/contacts/index.yaml
   /contacts/{contactId}:
-    parameters:
-      - name: contactId
-        in: path
-        required: true
-        schema:
-          type: string
     get:
       $ref: ../swagger/paths/contacts/{contactId}/get.yaml
     patch:
@@ -53,8 +47,8 @@ components:
       scheme: bearer
   schemas:
     Contact:
-      $ref: ../swagger/components/schemas/Contact.yaml#/Contact
+      $ref: ../swagger/components/schemas/Contact.yaml
     User:
-      $ref: ../swagger/components/schemas/User.yaml#/User
+      $ref: ../swagger/components/schemas/User.yaml
     Error:
-      $ref: ../swagger/components/schemas/Error.yaml#/Error
+      $ref: ../swagger/components/schemas/Error.yaml

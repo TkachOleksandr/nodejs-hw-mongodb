@@ -72,7 +72,7 @@ patch:
                 example: Невірний запит
               data:
                 type: string
-                example: ""
+                example: ''
             required:
               - status
               - code
@@ -96,7 +96,7 @@ patch:
                 example: Контакт не знайдено
               data:
                 type: string
-                example: ""
+                example: ''
             required:
               - status
               - code
