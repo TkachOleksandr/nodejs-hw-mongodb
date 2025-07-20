@@ -1,5 +1,5 @@
 import express from 'express';
-import contactsRouter from './routes/contacts.js';
+import contactsRouter from './routers/contacts.js';
 import authRouter from './routes/auth.js';
 import errorHandler from './middlewares/errorHandler.js'; // або як він у тебе називається
 
