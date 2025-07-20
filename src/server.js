@@ -9,6 +9,7 @@ import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import multer from 'multer';
 import { authenticate } from './middlewares/authenticate.js';
 import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
@@ -23,64 +24,38 @@ export const startServer = async () => {
 
   // Завантаження Swagger документації
   const swaggerPath = path.resolve(__dirname, '../docs/swagger.json');
-  console.log('Swagger file path:', swaggerPath);
-  
   if (!fs.existsSync(swaggerPath)) {
-    throw new Error('Swagger file not found at: ' + swaggerPath);
+    throw new Error('Swagger file not found');
   }
-
   const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf-8'));
 
   // Middlewares
-  app.use(cookieParser());
   app.use(cors());
   app.use(pino());
   app.use(express.json());
+  app.use(cookieParser());
+  app.use(multer().none()); // Для обробки multipart/form-data
 
-  // Логування запитів
-  app.use((req, res, next) => {
-    console.log(`Request: ${req.method} ${req.url}`);
-    next();
-  });
-
-  // Спеціальні налаштування для Swagger UI
+  // Swagger UI
   const swaggerOptions = {
     explorer: true,
     swaggerOptions: {
-      validatorUrl: null,
-      docExpansion: 'list',
       persistAuthorization: true,
       displayRequestDuration: true,
-      // Додаємо параметр для коректного відображення path parameters
-      plugins: [
-        () => ({
-          statePlugins: {
-            spec: {
-              wrapSelectors: {
-                allowTryItOutFor: () => () => true
-              }
-            }
-          }
-        })
-      ]
+      defaultModelExpandDepth: 2
     }
   };
 
-  // Додаємо endpoint для raw swagger.json
-  app.get('/api-docs/swagger.json', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(swaggerDocument);
-  });
-
-  // Підключення Swagger UI з урахуванням усіх налаштувань
-  app.use('/api-docs',
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerDocument, swaggerOptions)
+  app.use('/api-docs', 
+    swaggerUi.serveFiles(swaggerDocument, swaggerOptions),
+    (req, res) => {
+      res.send(swaggerUi.generateHTML(swaggerDocument, swaggerOptions));
+    }
   );
 
   // Маршрути
-  app.use('/contacts', authenticate, contactsRouter);
   app.use('/auth', authRouter);
+  app.use('/contacts', authenticate, contactsRouter);
 
   // Обробка помилок
   app.use(notFoundHandler);
@@ -88,7 +63,7 @@ export const startServer = async () => {
 
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
-    console.log(`✅ Server is running on port ${PORT}`);
-    console.log(`📚 API docs available at http://localhost:${PORT}/api-docs`);
+    console.log(`Server running on port ${PORT}`);
+    console.log(`API docs: http://localhost:${PORT}/api-docs`);
   });
 };
