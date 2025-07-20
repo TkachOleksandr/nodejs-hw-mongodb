@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   version: 1.0.0
   title: Contacts API
@@ -20,23 +20,91 @@ servers:
 paths:
   /contacts:
     $ref: ../swagger/paths/contacts/index.yaml
+
   /contacts/{contactId}:
+    parameters:
+      - name: contactId
+        in: path
+        required: true
+        schema:
+          type: string
     get:
-      $ref: ../swagger/paths/contacts/{contactId}/get.yaml
+      summary: Отримати контакт за ID
+      tags:
+        - Contacts
+      operationId: getContactById
+      description: Повертає контакт за ID
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Контакт знайдено
+          content:
+            application/json:
+              schema:
+                $ref: ../swagger/components/schemas/Contact.yaml
+        '404':
+          description: Контакт не знайдено
+          content:
+            application/json:
+              schema:
+                $ref: ../swagger/components/schemas/Error.yaml
     patch:
-      $ref: ../swagger/paths/contacts/{contactId}/patch.yaml
+      summary: Оновити контакт за ID
+      tags:
+        - Contacts
+      operationId: updateContactById
+      description: Оновлює контакт
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../swagger/components/schemas/Contact.yaml
+      responses:
+        '200':
+          description: Контакт оновлено
+        '404':
+          description: Контакт не знайдено
+          content:
+            application/json:
+              schema:
+                $ref: ../swagger/components/schemas/Error.yaml
     delete:
-      $ref: ../swagger/paths/contacts/{contactId}/delete.yaml
+      summary: Видалити контакт за ID
+      tags:
+        - Contacts
+      operationId: deleteContactById
+      description: Видаляє контакт
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Контакт видалено
+        '404':
+          description: Контакт не знайдено
+          content:
+            application/json:
+              schema:
+                $ref: ../swagger/components/schemas/Error.yaml
+
   /auth/register:
     $ref: ../swagger/paths/auth/register.yaml
+
   /auth/login:
     $ref: ../swagger/paths/auth/login.yaml
+
   /auth/logout:
     $ref: ../swagger/paths/auth/logout.yaml
+
   /auth/refresh:
     $ref: ../swagger/paths/auth/refresh.yaml
+
   /auth/forgot-password:
     $ref: ../swagger/paths/auth/forgot-password.yaml
+
   /auth/reset-password:
     $ref: ../swagger/paths/auth/reset-password.yaml
 
@@ -45,6 +113,7 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+
   schemas:
     Contact:
       $ref: ../swagger/components/schemas/Contact.yaml
