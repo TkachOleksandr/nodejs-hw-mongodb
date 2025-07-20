@@ -142,7 +142,7 @@ paths:
                   format: binary
             encoding:
               photo:
-                contentType: image/jpeg, image/png
+                contentType: 'image/jpeg, image/png'
       responses:
         '201':
           description: Контакт створено
@@ -258,7 +258,7 @@ paths:
                   format: binary
             encoding:
               photo:
-                contentType: image/jpeg, image/png
+                contentType: 'image/jpeg, image/png'
       responses:
         '200':
           description: Контакт оновлено
