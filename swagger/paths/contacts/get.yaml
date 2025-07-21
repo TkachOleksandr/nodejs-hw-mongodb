@@ -1,0 +1,28 @@
+tags:
+  - Contacts
+summary: Get all contacts
+operationId: getAllContacts
+description: Returns a list of contacts with pagination
+security:
+  - bearerAuth: []
+parameters:
+  - in: query
+    name: page
+    schema:
+      type: integer
+      default: 1
+    description: Page number
+  - in: query
+    name: limit
+    schema:
+      type: integer
+      default: 10
+    description: Items per page
+  - in: query
+    name: favorite
+    schema:
+      type: boolean
+    description: Filter by favorite status
+responses:
+  200:
+    $ref: '../components/responses/contactsResponse.yaml'

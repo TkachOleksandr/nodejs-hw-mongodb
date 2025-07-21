@@ -1,0 +1,5 @@
+description: Single contact response
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/Contact'
