@@ -1,6 +1,6 @@
 tags:
   - Auth
-summary: Refresh access token
+summary: Refresh JWT token
 operationId: refreshToken
 description: Generate new access token using refresh token
 requestBody:
@@ -12,12 +12,12 @@ requestBody:
         properties:
           refreshToken:
             type: string
-            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+            example: dGhpc2lzYXJlZnJlc2h0b2tlbg==
         required:
           - refreshToken
 responses:
   '200':
-    description: New access token generated
+    description: New access token generated successfully
     content:
       application/json:
         schema:
@@ -26,14 +26,14 @@ responses:
             accessToken:
               type: string
               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-  '401':
-    description: Invalid refresh token
+  '400':
+    description: Bad request, validation failed
     content:
       application/json:
         schema:
           $ref: '../../components/schemas/Error.yaml'
-  '400':
-    description: Bad request, missing token
+  '401':
+    description: Unauthorized, invalid or expired refresh token
     content:
       application/json:
         schema:

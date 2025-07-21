@@ -43,7 +43,4 @@ responses:
           $ref: '../../components/schemas/Error.yaml'
   '409':
     description: Email already in use
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/schemas/Error.yaml'
+    content: ap

@@ -2,14 +2,32 @@ tags:
   - Auth
 summary: User logout
 operationId: logoutUser
-description: Logout user and invalidate refresh token
+description: Logout user by invalidating refresh token
 security:
   - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          refreshToken:
+            type: string
+            example: dGhpc2lzYXJlZnJlc2h0b2tlbg==
+        required:
+          - refreshToken
 responses:
   '204':
-    description: Logout successful, no content
+    description: User logged out successfully, no content returned
+  '400':
+    description: Bad request, validation failed
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/Error.yaml'
   '401':
-    description: Unauthorized, invalid or missing token
+    description: Unauthorized, invalid token
     content:
       application/json:
         schema:
