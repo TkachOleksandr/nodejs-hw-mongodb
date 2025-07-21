@@ -1,0 +1,74 @@
+get:
+  tags:
+    - Contacts
+  summary: Отримати всі контакти
+  operationId: getAllContacts
+  description: Повертає список контактів з підтримкою фільтрації, пагінації та сортування
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+    - name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+    - name: favorite
+      in: query
+      required: false
+      schema:
+        type: boolean
+    - name: sortBy
+      in: query
+      required: false
+      schema:
+        type: string
+    - name: sortOrder
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+  responses:
+    '200':
+      description: Список контактів
+    '401':
+      description: Неавторизований доступ
+
+post:
+  tags:
+    - Contacts
+  summary: Створити новий контакт
+  operationId: createContact
+  description: Додає новий контакт до бази даних
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required: [name, email, phone]
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            favorite:
+              type: boolean
+  responses:
+    '201':
+      description: Контакт створено
+    '400':
+      description: Помилка валідації
+    '401':
+      description: Неавторизований доступ

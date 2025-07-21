@@ -1,56 +1,52 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: Contacts app
+  title: Contacts API
   license:
-    'name': 'Apache 2.0'
-    identifier: ISC
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  description: This is a documentation of contacts app
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: REST API для керування контактами з авторизацією, email та зображеннями
+
 tags:
   - name: Contacts
-    description: Contacts operations.
+    description: Операції з контактами
   - name: Auth
-    description: Auth operations.
+    description: Операції авторизації
+
 servers:
   - url: http://localhost:3000
   - url: https://nodejs-hw-mongodb-1-lacz.onrender.com
+
 paths:
   /contacts:
-    get:
-      $ref: ../swagger/paths/contacts/get.yaml
-    post:
-      $ref: ../swagger/paths/contacts/post.yaml
+    $ref: ../swagger/paths/contacts/index.yaml
   /contacts/{contactId}:
     get:
-      $ref: ../swagger/paths/contacts/{contactId}/get.yaml
-    put:
-      $ref: ../swagger/paths/contacts/{contactId}/put.yaml
+      $ref: ../swagger/paths/contacts/{contactid}/get.yaml
     patch:
-      $ref: ../swagger/paths/contacts/{contactId}/patch.yaml
+      $ref: ../swagger/paths/contacts/{contactid}/patch.yaml
     delete:
-      $ref: ../swagger/paths/contacts/{contactId}/delete.yaml
+      $ref: ../swagger/paths/contacts/{contactid}/delete.yaml
   /auth/register:
-    post:
-      $ref: ../swagger/paths/auth/register.yaml
+    $ref: ../swagger/paths/auth/register.yaml
   /auth/login:
-    post:
-      $ref: ../swagger/paths/auth/login.yaml
-  /auth/refresh:
-    post:
-      $ref: ../swagger/paths/auth/refresh.yaml
+    $ref: ../swagger/paths/auth/login.yaml
   /auth/logout:
-    post:
-      $ref: ../swagger/paths/auth/logout.yaml
-  /auth/send-reset-email:
-    post:
-      $ref: ../swagger/paths/auth/send-reset-email.yaml
-  /auth/reset-pwd:
-    post:
-      $ref: ../swagger/paths/auth/reset-pwd.yaml
+    $ref: ../swagger/paths/auth/logout.yaml
+  /auth/refresh:
+    $ref: ../swagger/paths/auth/refresh.yaml
+  /auth/forgot-password:
+    $ref: ../swagger/paths/auth/forgot-password.yaml
+  /auth/reset-password:
+    $ref: ../swagger/paths/auth/reset-password.yaml
 
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
+  schemas:
+    Contact:
+      $ref: ../swagger/components/schemas/Contact.yaml#/Contact
+    User:
+      $ref: ../swagger/components/schemas/User.yaml#/User
