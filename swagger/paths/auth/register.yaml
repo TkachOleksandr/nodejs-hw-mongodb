@@ -1,23 +1,49 @@
-post:
-  tags:
-    - Auth
-  summary: Реєстрація користувача
-  operationId: registerUser
-  description: Реєструє нового користувача та створює сесію
-  requestBody:
-    required: true
+tags:
+  - Auth
+summary: User registration
+operationId: registerUser
+description: Register a new user with email and password
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+            example: user@example.com
+          password:
+            type: string
+            format: password
+            example: StrongPass123
+        required:
+          - email
+          - password
+responses:
+  '201':
+    description: User successfully registered
     content:
       application/json:
         schema:
           type: object
-          required: [email, password]
           properties:
             email:
               type: string
-            password:
+              example: user@example.com
+            subscription:
               type: string
-  responses:
-    '201':
-      description: Користувача зареєстровано
-    '400':
-      description: Некоректні дані
+              example: free
+  '400':
+    description: Bad request, validation failed
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/Error.yaml'
+  '409':
+    description: Email already in use
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/Error.yaml'

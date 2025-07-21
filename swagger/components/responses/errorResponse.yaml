@@ -1,0 +1,10 @@
+description: Error response
+content:
+  application/json:
+    schema:
+      $ref: '#/components/schemas/Error'
+    examples:
+      notFound:
+        value:
+          status: 'error'
+          message: 'Not found'

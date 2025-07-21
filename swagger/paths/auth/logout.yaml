@@ -1,13 +1,16 @@
-post:
-  tags:
-    - Auth
-  summary: Вихід користувача
-  operationId: logoutUser
-  description: Видаляє сесію користувача
-  security:
-    - bearerAuth: []
-  responses:
-    '204':
-      description: Сесію завершено
-    '401':
-      description: Неавторизований доступ
+tags:
+  - Auth
+summary: User logout
+operationId: logoutUser
+description: Logout user and invalidate refresh token
+security:
+  - bearerAuth: []
+responses:
+  '204':
+    description: Logout successful, no content
+  '401':
+    description: Unauthorized, invalid or missing token
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/Error.yaml'

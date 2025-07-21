@@ -1,0 +1,11 @@
+type: object
+properties:
+  status:
+    type: string
+    example: error
+  message:
+    type: string
+    example: Resource not found
+required:
+  - status
+  - message

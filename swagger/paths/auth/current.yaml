@@ -1,0 +1,27 @@
+tags:
+  - Auth
+summary: Get current user info
+operationId: getCurrentUser
+description: Returns data about the currently logged-in user
+security:
+  - bearerAuth: []
+responses:
+  '200':
+    description: Current user data
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              example: user@example.com
+            subscription:
+              type: string
+              example: free
+  '401':
+    description: Unauthorized, invalid or missing token
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/Error.yaml'

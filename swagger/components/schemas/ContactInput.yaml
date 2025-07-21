@@ -1,7 +1,5 @@
 type: object
 properties:
-  id:
-    type: string
   name:
     type: string
   email:
@@ -11,7 +9,6 @@ properties:
   favorite:
     type: boolean
 required:
-  - id
   - name
   - email
   - phone

@@ -10,6 +10,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
+
 import { authenticate } from './middlewares/authenticate.js';
 import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
@@ -22,12 +23,12 @@ const __dirname = path.dirname(__filename);
 export const startServer = async () => {
   const app = express();
 
-  // Multer налаштування для multipart/form-data
+  // Multer налаштування
   const upload = multer({
     storage: multer.memoryStorage(),
     limits: {
-      fileSize: 1024 * 1024, // 1MB
-      fields: 10
+      fileSize: 1024 * 1024,
+      fields: 10,
     },
     fileFilter: (req, file, cb) => {
       if (file.mimetype.startsWith('image/')) {
@@ -35,16 +36,16 @@ export const startServer = async () => {
       } else {
         cb(new Error('Only image files are allowed!'), false);
       }
-    }
+    },
   });
 
-  // Middlewares
+  // Middleware
   app.use(cors());
   app.use(pino());
   app.use(express.json());
   app.use(cookieParser());
 
-  // Swagger документація
+  // Swagger UI
   const swaggerPath = path.resolve(__dirname, '../docs/swagger.json');
   const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath, 'utf-8'));
 
@@ -54,16 +55,13 @@ export const startServer = async () => {
       persistAuthorization: true,
       displayRequestDuration: true,
       defaultModelExpandDepth: 3,
-      tryItOutEnabled: true
-    }
+      tryItOutEnabled: true,
+    },
   };
 
-  app.use('/api-docs', 
-    swaggerUi.serveFiles(swaggerDocument, swaggerOptions),
-    (req, res) => res.send(swaggerUi.generateHTML(swaggerDocument, swaggerOptions))
-  );
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
 
-  // Маршрути
+  // Роутери
   app.use('/auth', authRouter);
   app.use('/contacts', authenticate, contactsRouter);
 
@@ -73,13 +71,13 @@ export const startServer = async () => {
       return res.status(400).json({
         status: 'error',
         message: 'File upload error: ' + err.message,
-        data: null
+        data: null,
       });
     } else if (err) {
       return res.status(400).json({
         status: 'error',
         message: err.message,
-        data: null
+        data: null,
       });
     }
     next(err);

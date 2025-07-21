@@ -1,0 +1,11 @@
+description: List of contacts
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+        total: { type: integer }
