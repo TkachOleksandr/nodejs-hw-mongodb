@@ -27,6 +27,41 @@
   "paths": {
     "/users/register": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register new user",
+        "operationId": "registerUser",
+        "requestBody": {
+          "required": true,
+          "description": "User registration data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "user@example.com",
+                    "description": "Must be a valid email address"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "minLength": 6,
+                    "example": "password123",
+                    "description": "Minimum 6 characters"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": "User successfully registered",
@@ -41,7 +76,25 @@
                     },
                     "subscription": {
                       "type": "string",
+                      "enum": [
+                        "free",
+                        "pro",
+                        "business"
+                      ],
                       "example": "free"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    }
+                  }
+                },
+                "examples": {
+                  "success": {
+                    "value": {
+                      "email": "user@example.com",
+                      "subscription": "free",
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                     }
                   }
                 }
@@ -54,6 +107,14 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "invalidEmail": {
+                    "value": {
+                      "status": "error",
+                      "message": "Email must be valid"
+                    }
+                  }
                 }
               }
             }
@@ -64,6 +125,14 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "emailConflict": {
+                    "value": {
+                      "status": "error",
+                      "message": "Email already registered"
+                    }
+                  }
                 }
               }
             }

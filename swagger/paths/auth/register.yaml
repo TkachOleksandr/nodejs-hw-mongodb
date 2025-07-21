@@ -1,5 +1,31 @@
+tags:
+  - Auth
+summary: Register new user
+operationId: registerUser
+requestBody:
+  required: true
+  description: User registration data
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          email:
+            type: string
+            format: email
+            example: 'user@example.com'
+            description: Must be a valid email address
+          password:
+            type: string
+            format: password
+            minLength: 6
+            example: 'password123'
+            description: Minimum 6 characters
+        required:
+          - email
+          - password
 responses:
-  '201':
+  201:
     description: User successfully registered
     content:
       application/json:
@@ -8,19 +34,39 @@ responses:
           properties:
             email:
               type: string
-              example: user@example.com
+              example: 'user@example.com'
             subscription:
               type: string
-              example: free
-  '400':
+              enum: ['free', 'pro', 'business']
+              example: 'free'
+            token:
+              type: string
+              example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+        examples:
+          success:
+            value:
+              email: 'user@example.com'
+              subscription: 'free'
+              token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+  400:
     description: Bad request, validation failed
     content:
       application/json:
         schema:
           $ref: '../../components/schemas/Error.yaml'
-  '409':
+        examples:
+          invalidEmail:
+            value:
+              status: 'error'
+              message: 'Email must be valid'
+  409:
     description: Email already in use
     content:
       application/json:
         schema:
           $ref: '../../components/schemas/Error.yaml'
+        examples:
+          emailConflict:
+            value:
+              status: 'error'
+              message: 'Email already registered'
