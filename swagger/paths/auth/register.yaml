@@ -10,6 +10,10 @@ requestBody:
       schema:
         type: object
         properties:
+          name:
+            type: string
+            example: 'John Doe'
+            description: User full name
           email:
             type: string
             format: email
@@ -22,6 +26,7 @@ requestBody:
             example: 'password123'
             description: Minimum 6 characters
         required:
+          - name
           - email
           - password
 responses:

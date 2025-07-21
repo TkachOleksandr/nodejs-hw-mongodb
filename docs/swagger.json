@@ -25,11 +25,9 @@
     }
   ],
   "paths": {
-    "/users/register": {
+    "/auth/register": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Register new user",
         "operationId": "registerUser",
         "requestBody": {
@@ -54,10 +52,7 @@
                     "description": "Minimum 6 characters"
                   }
                 },
-                "required": [
-                  "email",
-                  "password"
-                ]
+                "required": ["email", "password"]
               }
             }
           }
@@ -70,17 +65,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "email": {
-                      "type": "string",
-                      "example": "user@example.com"
-                    },
+                    "email": { "type": "string", "example": "user@example.com" },
                     "subscription": {
                       "type": "string",
-                      "enum": [
-                        "free",
-                        "pro",
-                        "business"
-                      ],
+                      "enum": ["free", "pro", "business"],
                       "example": "free"
                     },
                     "token": {
@@ -105,9 +93,7 @@
             "description": "Bad request, validation failed",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
+                "schema": { "$ref": "#/components/schemas/Error" },
                 "examples": {
                   "invalidEmail": {
                     "value": {
@@ -123,9 +109,7 @@
             "description": "Email already in use",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
+                "schema": { "$ref": "#/components/schemas/Error" },
                 "examples": {
                   "emailConflict": {
                     "value": {
@@ -140,11 +124,9 @@
         }
       }
     },
-    "/users/login": {
+    "/auth/login": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User login",
         "operationId": "loginUser",
         "description": "Authenticate user and return JWT tokens",
@@ -155,21 +137,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "example": "user@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password",
-                    "example": "StrongPass123"
-                  }
+                  "email": { "type": "string", "format": "email", "example": "user@example.com" },
+                  "password": { "type": "string", "format": "password", "example": "StrongPass123" }
                 },
-                "required": [
-                  "email",
-                  "password"
-                ]
+                "required": ["email", "password"]
               }
             }
           }
@@ -182,55 +153,25 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "accessToken": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                    },
-                    "refreshToken": {
-                      "type": "string",
-                      "example": "dGhpc2lzYXJlZnJlc2h0b2tlbg=="
-                    }
+                    "accessToken": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
+                    "refreshToken": { "type": "string", "example": "dGhpc2lzYXJlZnJlc2h0b2tlbg==" }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad request, validation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, invalid credentials",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
+          "400": { "description": "Bad request, validation failed", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized, invalid credentials", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
-    "/users/logout": {
+    "/auth/logout": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "User logout",
         "operationId": "logoutUser",
         "description": "Logout user by invalidating refresh token",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -238,58 +179,27 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "refreshToken": {
-                    "type": "string",
-                    "example": "dGhpc2lzYXJlZnJlc2h0b2tlbg=="
-                  }
+                  "refreshToken": { "type": "string", "example": "dGhpc2lzYXJlZnJlc2h0b2tlbg==" }
                 },
-                "required": [
-                  "refreshToken"
-                ]
+                "required": ["refreshToken"]
               }
             }
           }
         },
         "responses": {
-          "204": {
-            "description": "User logged out successfully, no content returned"
-          },
-          "400": {
-            "description": "Bad request, validation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, invalid token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
+          "204": { "description": "User logged out successfully, no content returned" },
+          "400": { "description": "Bad request, validation failed", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized, invalid token", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
-    "/users/current": {
+    "/auth/current": {
       "get": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Get current user info",
         "operationId": "getCurrentUser",
         "description": "Returns current authenticated user information",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
             "description": "Current user info retrieved successfully",
@@ -298,37 +208,20 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "email": {
-                      "type": "string",
-                      "example": "user@example.com"
-                    },
-                    "subscription": {
-                      "type": "string",
-                      "example": "free"
-                    }
+                    "email": { "type": "string", "example": "user@example.com" },
+                    "subscription": { "type": "string", "example": "free" }
                   }
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized, invalid or missing token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
+          "401": { "description": "Unauthorized, invalid or missing token", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
-    "/users/refresh": {
+    "/auth/refresh": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
+        "tags": ["Auth"],
         "summary": "Refresh JWT token",
         "operationId": "refreshToken",
         "description": "Generate new access token using refresh token",
@@ -339,14 +232,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "refreshToken": {
-                    "type": "string",
-                    "example": "dGhpc2lzYXJlZnJlc2h0b2tlbg=="
-                  }
+                  "refreshToken": { "type": "string", "example": "dGhpc2lzYXJlZnJlc2h0b2tlbg==" }
                 },
-                "required": [
-                  "refreshToken"
-                ]
+                "required": ["refreshToken"]
               }
             }
           }
@@ -359,79 +247,28 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "accessToken": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                    }
+                    "accessToken": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad request, validation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, invalid or expired refresh token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
+          "400": { "description": "Bad request, validation failed", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } },
+          "401": { "description": "Unauthorized, invalid or expired refresh token", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
     },
     "/contacts": {
       "get": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Get list of contacts",
         "operationId": "getContacts",
         "description": "Returns paginated list of contacts",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "favorite",
-            "in": "query",
-            "description": "Filter by favorite",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          }
+          { "name": "page", "in": "query", "description": "Page number", "required": false, "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "description": "Number of items per page", "required": false, "schema": { "type": "integer" } },
+          { "name": "favorite", "in": "query", "description": "Filter by favorite", "required": false, "schema": { "type": "boolean" } }
         ],
         "responses": {
           "200": {
@@ -440,9 +277,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Contact"
-                  }
+                  "items": { "$ref": "#/components/schemas/Contact" }
                 }
               }
             }
@@ -451,33 +286,23 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           }
         }
       },
       "post": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Create new contact",
         "operationId": "createContact",
         "description": "Create a new contact for the authenticated user",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactInput"
-              }
+              "schema": { "$ref": "#/components/schemas/ContactInput" }
             }
           }
         },
@@ -486,9 +311,7 @@
             "description": "Contact created successfully",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Contact"
-                }
+                "schema": { "$ref": "#/components/schemas/Contact" }
               }
             }
           },
@@ -496,9 +319,7 @@
             "description": "Bad request",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           },
@@ -506,9 +327,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           }
@@ -517,36 +336,20 @@
     },
     "/contacts/{id}": {
       "get": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Get contact by ID",
         "operationId": "getContactById",
         "description": "Returns a contact by ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "ID of the contact",
-            "schema": {
-              "type": "string"
-            }
-          }
+          { "name": "id", "in": "path", "required": true, "description": "ID of the contact", "schema": { "type": "string" } }
         ],
         "responses": {
           "200": {
             "description": "Contact found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Contact"
-                }
+                "schema": { "$ref": "#/components/schemas/Contact" }
               }
             }
           },
@@ -554,9 +357,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           },
@@ -564,43 +365,26 @@
             "description": "Contact not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           }
         }
       },
       "patch": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Update contact by ID",
         "operationId": "updateContact",
         "description": "Updates a contact with given fields",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactInput"
-              }
+              "schema": { "$ref": "#/components/schemas/ContactInput" }
             }
           }
         },
@@ -609,9 +393,7 @@
             "description": "Contact updated",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Contact"
-                }
+                "schema": { "$ref": "#/components/schemas/Contact" }
               }
             }
           },
@@ -619,9 +401,7 @@
             "description": "Invalid input",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           },
@@ -629,9 +409,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           },
@@ -639,35 +417,20 @@
             "description": "Contact not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           }
         }
       },
       "delete": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Delete contact by ID",
         "operationId": "deleteContact",
         "description": "Deletes a contact by ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
         ],
         "responses": {
           "200": {
@@ -690,9 +453,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           },
@@ -700,9 +461,7 @@
             "description": "Contact not found",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+                "schema": { "$ref": "#/components/schemas/Error" }
               }
             }
           }
@@ -722,67 +481,31 @@
       "Contact": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "favorite": {
-            "type": "boolean"
-          }
+          "id": { "type": "string", "example": "62e68b6f2c9f5e1a23456789" },
+          "name": { "type": "string", "example": "John Doe" },
+          "email": { "type": "string", "format": "email", "example": "john.doe@example.com" },
+          "phone": { "type": "string", "example": "+1234567890" },
+          "favorite": { "type": "boolean", "example": false }
         },
-        "required": [
-          "id",
-          "name",
-          "email",
-          "phone"
-        ]
+        "required": ["id", "name", "email", "phone"]
       },
       "ContactInput": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "favorite": {
-            "type": "boolean"
-          }
+          "name": { "type": "string", "example": "John Doe" },
+          "email": { "type": "string", "format": "email", "example": "john.doe@example.com" },
+          "phone": { "type": "string", "example": "+1234567890" },
+          "favorite": { "type": "boolean", "example": false }
         },
-        "required": [
-          "name",
-          "email",
-          "phone"
-        ]
+        "required": ["name", "email", "phone"]
       },
       "Error": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "string",
-            "example": "error"
-          },
-          "message": {
-            "type": "string",
-            "example": "Resource not found"
-          }
+          "status": { "type": "string", "example": "error" },
+          "message": { "type": "string", "example": "Resource not found" }
         },
-        "required": [
-          "status",
-          "message"
-        ]
+        "required": ["status", "message"]
       }
     }
   }
