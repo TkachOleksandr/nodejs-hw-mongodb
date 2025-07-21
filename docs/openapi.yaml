@@ -17,19 +17,20 @@ servers:
   - url: https://nodejs-hw-mongodb-1-lacz.onrender.com
 
 paths:
-  /users/register:
+  paths:
+  /auth/register:
     post:
       $ref: '../swagger/paths/auth/register.yaml'
-  /users/login:
+  /auth/login:
     post:
       $ref: '../swagger/paths/auth/login.yaml'
-  /users/logout:
+  /auth/logout:
     post:
       $ref: '../swagger/paths/auth/logout.yaml'
-  /users/current:
+  /auth/current:
     get:
       $ref: '../swagger/paths/auth/current.yaml'
-  /users/refresh:
+  /auth/refresh:
     post:
       $ref: '../swagger/paths/auth/refresh.yaml'
   /contacts:
