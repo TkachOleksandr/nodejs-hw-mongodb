@@ -27,38 +27,6 @@
   "paths": {
     "/users/register": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "User registration",
-        "operationId": "registerUser",
-        "description": "Register a new user with email and password",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "example": "user@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "format": "password",
-                    "example": "StrongPass123"
-                  }
-                },
-                "required": [
-                  "email",
-                  "password"
-                ]
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": "User successfully registered",
@@ -92,7 +60,13 @@
           },
           "409": {
             "description": "Email already in use",
-            "content": "ap"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
