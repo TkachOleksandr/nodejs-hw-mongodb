@@ -1,45 +1,44 @@
-patch:
-  tags:
-    - Contacts
-  summary: Update a contact by ID
-  operationId: updateContactById
-  security:
-    - bearerAuth: []
-  parameters:
-    - name: id
-      in: path
-      required: true
-      description: ID of the contact to update
-      schema:
-        type: string
-  requestBody:
+tags:
+  - Contacts
+summary: Update a contact by ID
+operationId: updateContactById
+security:
+  - bearerAuth: []
+parameters:
+  - name: id
+    in: path
     required: true
-    content:
-      multipart/form-data:
-        schema:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Jane Doe
-            email:
-              type: string
-              format: email
-              example: jane@example.com
-            phone:
-              type: string
-              example: +380501234567
-            favorite:
-              type: boolean
-              example: true
-            avatar:
-              type: string
-              format: binary
-              description: New avatar image
-  responses:
-    '200':
-      $ref: '../../components/responses/contactResponse.yaml'
-    '400':
-      $ref: '../../components/responses/errorResponse.yaml'
-    '404':
-      $ref: '../../components/responses/errorResponse.yaml'
+    description: ID of the contact to update
+    schema:
+      type: string
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Jane Doe
+          email:
+            type: string
+            format: email
+            example: jane@example.com
+          phone:
+            type: string
+            example: +380501234567
+          favorite:
+            type: boolean
+            example: true
+          avatar:
+            type: string
+            format: binary
+            description: New avatar image
+responses:
+  '200':
+    $ref: '../../../components/responses/contactResponse.yaml'
+  '400':
+    $ref: '../../../components/responses/errorResponse.yaml'
+  '404':
+    $ref: '../../../components/responses/errorResponse.yaml'

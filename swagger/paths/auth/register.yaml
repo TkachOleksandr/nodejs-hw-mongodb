@@ -2,6 +2,7 @@ tags:
   - Auth
 summary: Register new user
 operationId: registerUser
+security: [] # <<--- означає, що цей ендпоінт не потребує авторизації
 requestBody:
   required: true
   description: User registration data

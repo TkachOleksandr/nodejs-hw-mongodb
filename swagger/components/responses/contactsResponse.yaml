@@ -7,5 +7,5 @@ content:
         contacts:
           type: array
           items:
-            $ref: '#/components/schemas/Contact'
+            $ref: '../schemas/Contact.yaml'
         total: { type: integer }

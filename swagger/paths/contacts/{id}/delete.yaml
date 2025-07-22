@@ -1,30 +1,29 @@
-delete:
-  tags:
-    - Contacts
-  summary: Delete contact by ID
-  operationId: deleteContact
-  security:
-    - bearerAuth: []
-  parameters:
-    - name: id
-      in: path
-      required: true
-      description: ID контакту, який потрібно видалити
-      schema:
-        type: string
-  responses:
-    '200':
-      description: Contact deleted successfully
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: success
-              message:
-                type: string
-                example: Contact deleted
-    '404':
-      $ref: '../../components/responses/errorResponse.yaml'
+tags:
+  - Contacts
+summary: Delete contact by ID
+operationId: deleteContact
+security:
+  - bearerAuth: []
+parameters:
+  - name: id
+    in: path
+    required: true
+    description: ID контакту, який потрібно видалити
+    schema:
+      type: string
+responses:
+  '200':
+    description: Contact deleted successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status:
+              type: string
+              example: success
+            message:
+              type: string
+              example: Contact deleted
+  '404':
+    $ref: '../../../components/responses/errorResponse.yaml'

@@ -2,6 +2,7 @@ tags:
   - Auth
 summary: Refresh JWT token
 operationId: refreshToken
+security: []
 description: Generate new access token using refresh token
 requestBody:
   required: true

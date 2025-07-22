@@ -1,42 +1,41 @@
-post:
-  tags:
-    - Contacts
-  summary: Create a new contact
-  operationId: createContact
-  security:
-    - bearerAuth: []
-  requestBody:
-    required: true
-    content:
-      multipart/form-data:
-        schema:
-          type: object
-          required:
-            - name
-            - email
-            - phone
-          properties:
-            name:
-              type: string
-              example: John Doe
-            email:
-              type: string
-              format: email
-              example: john@example.com
-            phone:
-              type: string
-              example: +380501234567
-            favorite:
-              type: boolean
-              example: false
-            avatar:
-              type: string
-              format: binary
-              description: Contact avatar image
-  responses:
-    '201':
-      $ref: '../../components/responses/contactResponse.yaml'
-    '400':
-      $ref: '../../components/responses/errorResponse.yaml'
-    '401':
-      $ref: '../../components/responses/errorResponse.yaml'
+tags:
+  - Contacts
+summary: Create a new contact
+operationId: createContact
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - email
+          - phone
+        properties:
+          name:
+            type: string
+            example: John Doe
+          email:
+            type: string
+            format: email
+            example: john@example.com
+          phone:
+            type: string
+            example: +380501234567
+          favorite:
+            type: boolean
+            example: false
+          avatar:
+            type: string
+            format: binary
+            description: Contact avatar image
+responses:
+  '201':
+    $ref: '../../components/responses/contactResponse.yaml'
+  '400':
+    $ref: '../../components/responses/errorResponse.yaml'
+  '401':
+    $ref: '../../components/responses/errorResponse.yaml'
