@@ -2,7 +2,7 @@ description: Error response
 content:
   application/json:
     schema:
-      $ref: '#/components/schemas/Error'
+      $ref: '../schemas/Error.yaml'
     examples:
       notFound:
         value:

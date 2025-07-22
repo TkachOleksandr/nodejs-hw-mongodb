@@ -14,20 +14,6 @@ parameters:
       type: string
 responses:
   '200':
-    description: Contact found
-    content:
-      application/json:
-        schema:
-          $ref: '../../../components/schemas/Contact.yaml'
+    $ref: '../../../components/responses/contactResponse.yaml'
   '404':
-    description: Contact not found
-    content:
-      application/json:
-        schema:
-          $ref: '../../../components/schemas/Error.yaml'
-  '401':
-    description: Unauthorized
-    content:
-      application/json:
-        schema:
-          $ref: '../../../components/schemas/Error.yaml'
+    $ref: '../../../components/responses/errorResponse.yaml'

@@ -38,29 +38,8 @@ patch:
               description: New avatar image
   responses:
     '200':
-      description: Contact updated successfully
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: success
-              code:
-                type: integer
-                example: 200
-              message:
-                type: string
-                example: Contact updated successfully
-              data:
-                type: object
-                properties:
-                  contact:
-                    $ref: '../../../components/schemas/Contact.yaml'
+      $ref: '../../components/responses/contactResponse.yaml'
     '400':
-      $ref: '../../../components/responses/BadRequest.yaml'
-    '401':
-      $ref: '../../../components/responses/Unauthorized.yaml'
+      $ref: '../../components/responses/errorResponse.yaml'
     '404':
-      $ref: '../../../components/responses/NotFound.yaml'
+      $ref: '../../components/responses/errorResponse.yaml'

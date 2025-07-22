@@ -47,36 +47,6 @@ get:
         example: name|email
   responses:
     '200':
-      description: Список контактів користувача
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: success
-              code:
-                type: integer
-                example: 200
-              message:
-                type: string
-                example: Contacts fetched successfully
-              data:
-                type: object
-                properties:
-                  contacts:
-                    type: array
-                    items:
-                      $ref: '../../components/schemas/Contact.yaml'
-                  page:
-                    type: integer
-                    example: 1
-                  limit:
-                    type: integer
-                    example: 10
-                  total:
-                    type: integer
-                    example: 45
-    '401':
-      $ref: '../../components/responses/Unauthorized.yaml'
+      $ref: '../../components/responses/contactsResponse.yaml'
+    '404':
+      $ref: '../../components/responses/errorResponse.yaml'

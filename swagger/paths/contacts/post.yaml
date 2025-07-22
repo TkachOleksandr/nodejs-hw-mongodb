@@ -35,27 +35,8 @@ post:
               description: Contact avatar image
   responses:
     '201':
-      description: Contact created successfully
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: success
-              code:
-                type: integer
-                example: 201
-              message:
-                type: string
-                example: Contact created successfully
-              data:
-                type: object
-                properties:
-                  contact:
-                    $ref: '../../components/schemas/Contact.yaml'
+      $ref: '../../components/responses/ContactSuccess.yaml'
     '400':
-      $ref: '../../components/responses/BadRequest.yaml'
+      $ref: '../../components/responses/errorResponse.yaml'
     '401':
-      $ref: '../../components/responses/Unauthorized.yaml'
+      $ref: '../../components/responses/errorResponse.yaml'
