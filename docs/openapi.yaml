@@ -15,8 +15,8 @@ tags:
 
 servers:
   - url: https://nodejs-hw-mw7-swagger-1-lacz.onrender.com
+
 paths:
-  paths:
   /auth/register:
     post:
       $ref: '../swagger/paths/auth/register.yaml'

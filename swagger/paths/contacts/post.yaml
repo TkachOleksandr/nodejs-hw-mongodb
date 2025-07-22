@@ -1,32 +1,61 @@
-tags:
-  - Contacts
-summary: Create new contact
-operationId: createContact
-description: Create a new contact for the authenticated user
-security:
-  - bearerAuth: []
-requestBody:
-  required: true
-  content:
-    application/json:
-      schema:
-        $ref: '../../components/schemas/ContactInput.yaml'
-responses:
-  '201':
-    description: Contact created successfully
+post:
+  tags:
+    - Contacts
+  summary: Create a new contact
+  operationId: createContact
+  security:
+    - bearerAuth: []
+  requestBody:
+    required: true
     content:
-      application/json:
+      multipart/form-data:
         schema:
-          $ref: '../../components/schemas/Contact.yaml'
-  '400':
-    description: Bad request
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/schemas/Error.yaml'
-  '401':
-    description: Unauthorized
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/schemas/Error.yaml'
+          type: object
+          required:
+            - name
+            - email
+            - phone
+          properties:
+            name:
+              type: string
+              example: John Doe
+            email:
+              type: string
+              format: email
+              example: john@example.com
+            phone:
+              type: string
+              example: +380501234567
+            favorite:
+              type: boolean
+              example: false
+            avatar:
+              type: string
+              format: binary
+              description: Contact avatar image
+  responses:
+    '201':
+      description: Contact created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              code:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: Contact created successfully
+              data:
+                type: object
+                properties:
+                  contact:
+                    $ref: '../../components/schemas/Contact.yaml'
+    '400':
+      $ref: '../../components/responses/BadRequest.yaml'
+    '401':
+      $ref: '../../components/responses/Unauthorized.yaml'

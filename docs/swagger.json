@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://nodejs-hw-mongodb-1-lacz.onrender.com"
+      "url": "https://nodejs-hw-mw7-swagger-1-lacz.onrender.com"
     }
   ],
   "tags": [
@@ -25,7 +25,6 @@
     }
   ],
   "paths": {
-    "paths": null,
     "/auth/register": {
       "post": {
         "tags": [
@@ -400,123 +399,219 @@
     },
     "/contacts": {
       "get": {
-        "tags": [
-          "Contacts"
-        ],
-        "summary": "Get list of contacts",
-        "operationId": "getContacts",
-        "description": "Returns paginated list of contacts",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number",
-            "required": false,
-            "schema": {
-              "type": "integer"
+        "get": {
+          "tags": [
+            "Contacts"
+          ],
+          "summary": "Get all user contacts",
+          "operationId": "getAllContacts",
+          "security": [
+            {
+              "bearerAuth": []
             }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": false,
-            "schema": {
-              "type": "integer"
+          ],
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "Номер сторінки (за замовчуванням 1)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 1
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Кількість контактів на сторінці (за замовчуванням 20)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 20
+              }
+            },
+            {
+              "name": "favorite",
+              "in": "query",
+              "description": "Фільтр за улюбленими контактами",
+              "required": false,
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            {
+              "name": "sortBy",
+              "in": "query",
+              "description": "Сортувати за полем (наприклад name)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "sortByDesc",
+              "in": "query",
+              "description": "Сортувати за полем у спадному порядку (наприклад email)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "filter",
+              "in": "query",
+              "description": "Виводити лише вказані поля, розділені |",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "example": "name|email"
+              }
             }
-          },
-          {
-            "name": "favorite",
-            "in": "query",
-            "description": "Filter by favorite",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of contacts",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Contact"
+          ],
+          "responses": {
+            "200": {
+              "description": "Список контактів користувача",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "success"
+                      },
+                      "code": {
+                        "type": "integer",
+                        "example": 200
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Contacts fetched successfully"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "contacts": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "../../components/schemas/Contact.yaml"
+                            }
+                          },
+                          "page": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "example": 10
+                          },
+                          "total": {
+                            "type": "integer",
+                            "example": 45
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
+            },
+            "401": {
+              "$ref": "../../components/responses/Unauthorized.yaml"
             }
           }
         }
       },
       "post": {
-        "tags": [
-          "Contacts"
-        ],
-        "summary": "Create new contact",
-        "operationId": "createContact",
-        "description": "Create a new contact for the authenticated user",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ContactInput"
-              }
+        "post": {
+          "tags": [
+            "Contacts"
+          ],
+          "summary": "Create a new contact",
+          "operationId": "createContact",
+          "security": [
+            {
+              "bearerAuth": []
             }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Contact created successfully",
+          ],
+          "requestBody": {
+            "required": true,
             "content": {
-              "application/json": {
+              "multipart/form-data": {
                 "schema": {
-                  "$ref": "#/components/schemas/Contact"
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "email",
+                    "phone"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "example": "john@example.com"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "example": 380501234567
+                    },
+                    "favorite": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "Contact avatar image"
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+          "responses": {
+            "201": {
+              "description": "Contact created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "success"
+                      },
+                      "code": {
+                        "type": "integer",
+                        "example": 201
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Contact created successfully"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "contact": {
+                            "$ref": "../../components/schemas/Contact.yaml"
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
+            },
+            "400": {
+              "$ref": "../../components/responses/BadRequest.yaml"
+            },
+            "401": {
+              "$ref": "../../components/responses/Unauthorized.yaml"
             }
           }
         }
@@ -580,137 +675,164 @@
         }
       },
       "patch": {
-        "tags": [
-          "Contacts"
-        ],
-        "summary": "Update contact by ID",
-        "operationId": "updateContact",
-        "description": "Updates a contact with given fields",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "patch": {
+          "tags": [
+            "Contacts"
+          ],
+          "summary": "Update a contact by ID",
+          "operationId": "updateContactById",
+          "security": [
+            {
+              "bearerAuth": []
             }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID of the contact to update",
               "schema": {
-                "$ref": "#/components/schemas/ContactInput"
+                "type": "string"
               }
             }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Contact updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Contact"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Contact not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Contacts"
-        ],
-        "summary": "Delete contact by ID",
-        "operationId": "deleteContact",
-        "description": "Deletes a contact by ID",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
+          ],
+          "requestBody": {
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Contact deleted",
             "content": {
-              "application/json": {
+              "multipart/form-data": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
+                    "name": {
                       "type": "string",
-                      "example": "Contact deleted"
+                      "example": "Jane Doe"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "example": "jane@example.com"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "example": 380501234567
+                    },
+                    "favorite": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "New avatar image"
                     }
                   }
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+          "responses": {
+            "200": {
+              "description": "Contact updated successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "success"
+                      },
+                      "code": {
+                        "type": "integer",
+                        "example": 200
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Contact updated successfully"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "contact": {
+                            "$ref": "../../../components/schemas/Contact.yaml"
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
+              }
+            },
+            "400": {
+              "$ref": "../../../components/responses/BadRequest.yaml"
+            },
+            "401": {
+              "$ref": "../../../components/responses/Unauthorized.yaml"
+            },
+            "404": {
+              "$ref": "../../../components/responses/NotFound.yaml"
+            }
+          }
+        }
+      },
+      "delete": {
+        "delete": {
+          "tags": [
+            "Contacts"
+          ],
+          "summary": "Delete contact by ID",
+          "operationId": "deleteContact",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID контакту, який потрібно видалити",
+              "schema": {
+                "type": "string"
               }
             }
-          },
-          "404": {
-            "description": "Contact not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+          ],
+          "responses": {
+            "200": {
+              "description": "Контакт успішно видалено",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "success"
+                      },
+                      "code": {
+                        "type": "integer",
+                        "example": 200
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "Contact deleted successfully"
+                      },
+                      "data": {
+                        "type": "null",
+                        "example": null
+                      }
+                    }
+                  }
                 }
               }
+            },
+            "401": {
+              "$ref": "../../../components/responses/Unauthorized.yaml"
+            },
+            "404": {
+              "$ref": "../../../components/responses/NotFound.yaml"
             }
           }
         }

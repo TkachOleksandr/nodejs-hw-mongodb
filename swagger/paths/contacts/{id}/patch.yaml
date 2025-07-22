@@ -1,44 +1,66 @@
-tags:
-  - Contacts
-summary: Update contact by ID
-operationId: updateContact
-description: Updates a contact with given fields
-security:
-  - bearerAuth: []
-parameters:
-  - name: id
-    in: path
-    required: true
-    schema:
-      type: string
-requestBody:
-  required: true
-  content:
-    application/json:
+patch:
+  tags:
+    - Contacts
+  summary: Update a contact by ID
+  operationId: updateContactById
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID of the contact to update
       schema:
-        $ref: '../../../components/schemas/ContactInput.yaml'
-responses:
-  '200':
-    description: Contact updated
+        type: string
+  requestBody:
+    required: true
     content:
-      application/json:
+      multipart/form-data:
         schema:
-          $ref: '../../../components/schemas/Contact.yaml'
-  '400':
-    description: Invalid input
-    content:
-      application/json:
-        schema:
-          $ref: '../../../components/schemas/Error.yaml'
-  '404':
-    description: Contact not found
-    content:
-      application/json:
-        schema:
-          $ref: '../../../components/schemas/Error.yaml'
-  '401':
-    description: Unauthorized
-    content:
-      application/json:
-        schema:
-          $ref: '../../../components/schemas/Error.yaml'
+          type: object
+          properties:
+            name:
+              type: string
+              example: Jane Doe
+            email:
+              type: string
+              format: email
+              example: jane@example.com
+            phone:
+              type: string
+              example: +380501234567
+            favorite:
+              type: boolean
+              example: true
+            avatar:
+              type: string
+              format: binary
+              description: New avatar image
+  responses:
+    '200':
+      description: Contact updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: Contact updated successfully
+              data:
+                type: object
+                properties:
+                  contact:
+                    $ref: '../../../components/schemas/Contact.yaml'
+    '400':
+      $ref: '../../../components/responses/BadRequest.yaml'
+    '401':
+      $ref: '../../../components/responses/Unauthorized.yaml'
+    '404':
+      $ref: '../../../components/responses/NotFound.yaml'
