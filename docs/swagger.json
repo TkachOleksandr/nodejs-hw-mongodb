@@ -532,7 +532,7 @@
           },
           "responses": {
             "201": {
-              "$ref": "../../components/responses/ContactSuccess.yaml"
+              "$ref": "../../components/responses/contactResponse.yaml"
             },
             "400": {
               "$ref": "../../components/responses/errorResponse.yaml"
@@ -738,16 +738,25 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "John Doe"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "example": "john@example.com"
           },
           "phone": {
-            "type": "string"
+            "type": "string",
+            "example": 380501234567
           },
           "favorite": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": true
+          },
+          "avatar": {
+            "type": "string",
+            "format": "binary"
           }
         },
         "required": [
