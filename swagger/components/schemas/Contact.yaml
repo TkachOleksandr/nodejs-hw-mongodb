@@ -29,7 +29,7 @@ properties:
     type: string
     format: date-time
     example: '2023-09-20T12:00:00Z'
-  avatarURL:
+  avatar:
     type: string
     format: uri
     example: 'https://example.com/avatars/john.jpg'
