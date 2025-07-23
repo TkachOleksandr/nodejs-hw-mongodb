@@ -1,17 +1,39 @@
 type: object
 properties:
-  id:
+  _id:
     type: string
+    format: mongo-id
+    example: '507f1f77bcf86cd799439011'
   name:
     type: string
+    example: 'John Doe'
   email:
     type: string
+    format: email
+    example: 'john@example.com'
   phone:
     type: string
+    example: '+380501234567'
   favorite:
     type: boolean
+    example: false
+  owner:
+    type: string
+    format: mongo-id
+    example: '507f1f77bcf86cd799439012'
+  createdAt:
+    type: string
+    format: date-time
+    example: '2023-09-20T12:00:00Z'
+  updatedAt:
+    type: string
+    format: date-time
+    example: '2023-09-20T12:00:00Z'
+  avatarURL:
+    type: string
+    format: uri
+    example: 'https://example.com/avatars/john.jpg'
 required:
-  - id
   - name
   - email
   - phone

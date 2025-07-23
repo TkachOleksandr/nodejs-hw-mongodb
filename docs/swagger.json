@@ -711,24 +711,50 @@
       "Contact": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
+          "_id": {
+            "type": "string",
+            "format": "mongo-id",
+            "example": "507f1f77bcf86cd799439011"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "John Doe"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "example": "john@example.com"
           },
           "phone": {
-            "type": "string"
+            "type": "string",
+            "example": "+380501234567"
           },
           "favorite": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": false
+          },
+          "owner": {
+            "type": "string",
+            "format": "mongo-id",
+            "example": "507f1f77bcf86cd799439012"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-20T12:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-20T12:00:00Z"
+          },
+          "avatarURL": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/avatars/john.jpg"
           }
         },
         "required": [
-          "id",
           "name",
           "email",
           "phone"
@@ -785,7 +811,7 @@
     },
     "responses": {
       "contactsResponse": {
-        "description": "List of contacts response",
+        "description": "Successful operation with contacts list",
         "content": {
           "application/json": {
             "schema": {
@@ -802,17 +828,34 @@
                 "data": {
                   "type": "object",
                   "properties": {
+                    "total": {
+                      "type": "integer",
+                      "example": 100,
+                      "description": "Total number of contacts"
+                    },
+                    "page": {
+                      "type": "integer",
+                      "example": 1,
+                      "description": "Current page number"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "example": 20,
+                      "description": "Number of items per page"
+                    },
                     "contacts": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/Contact"
                       }
-                    },
-                    "total": {
-                      "type": "integer",
-                      "example": 3
                     }
-                  }
+                  },
+                  "required": [
+                    "total",
+                    "page",
+                    "limit",
+                    "contacts"
+                  ]
                 }
               }
             }

@@ -1,4 +1,4 @@
-description: List of contacts response
+description: Successful operation with contacts list
 content:
   application/json:
     schema:
@@ -6,17 +6,31 @@ content:
       properties:
         status:
           type: string
-          example: success
+          example: 'success'
         code:
           type: integer
           example: 200
         data:
           type: object
           properties:
+            total:
+              type: integer
+              example: 100
+              description: Total number of contacts
+            page:
+              type: integer
+              example: 1
+              description: Current page number
+            limit:
+              type: integer
+              example: 20
+              description: Number of items per page
             contacts:
               type: array
               items:
                 $ref: '../schemas/Contact.yaml'
-            total:
-              type: integer
-              example: 3
+          required:
+            - total
+            - page
+            - limit
+            - contacts
