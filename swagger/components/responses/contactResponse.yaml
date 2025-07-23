@@ -2,4 +2,13 @@ description: Single contact response
 content:
   application/json:
     schema:
-      $ref: '../schemas/Contact.yaml'
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        code:
+          type: integer
+          example: 200
+        data:
+          $ref: '../schemas/Contact.yaml'

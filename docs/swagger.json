@@ -785,20 +785,34 @@
     },
     "responses": {
       "contactsResponse": {
-        "description": "List of contacts",
+        "description": "List of contacts response",
         "content": {
           "application/json": {
             "schema": {
               "type": "object",
               "properties": {
-                "contacts": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Contact"
-                  }
+                "status": {
+                  "type": "string",
+                  "example": "success"
                 },
-                "total": {
-                  "type": "integer"
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "contacts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Contact"
+                      }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "example": 3
+                    }
+                  }
                 }
               }
             }
@@ -828,7 +842,20 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/Contact"
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "success"
+                },
+                "code": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
             }
           }
         }

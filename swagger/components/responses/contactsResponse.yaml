@@ -1,11 +1,22 @@
-description: List of contacts
+description: List of contacts response
 content:
   application/json:
     schema:
       type: object
       properties:
-        contacts:
-          type: array
-          items:
-            $ref: '../schemas/Contact.yaml'
-        total: { type: integer }
+        status:
+          type: string
+          example: success
+        code:
+          type: integer
+          example: 200
+        data:
+          type: object
+          properties:
+            contacts:
+              type: array
+              items:
+                $ref: '../schemas/Contact.yaml'
+            total:
+              type: integer
+              example: 3
